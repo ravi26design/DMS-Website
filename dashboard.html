@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — FES DMS</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #0a0a0a; background: #f7f7f7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Shared Nav ── */
+    .lp-nav {
+      position: sticky; top: 0;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0 max(24px, calc((100% - 1280px) / 2)); height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      z-index: 100;
+    }
+    .lp-nav-brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .lp-nav-brand-icon {
+      width: 34px; height: 34px; background: #0a0a0a; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lp-nav-brand-icon svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 1.8; }
+    .lp-nav-brand-name { font-size: 15px; font-weight: 800; letter-spacing: -0.02em; color: #0a0a0a; }
+    .lp-nav-brand-sub { font-size: 10px; color: #888; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 1px; }
+    .lp-nav-links { display: flex; gap: 32px; }
+    .lp-nav-link { font-size: 13px; font-weight: 500; color: #555; text-decoration: none; cursor: pointer; transition: color .15s; }
+    .lp-nav-link:hover { color: #0a0a0a; }
+    .lp-nav-link-active { color: #0a0a0a; font-weight: 700; }
+    .lp-nav-cta { display: flex; align-items: center; gap: 12px; }
+    .lp-btn-ghost {
+      padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      border: 1px solid #ddd; background: transparent; cursor: pointer; color: #333;
+      transition: border-color .15s, color .15s;
+    }
+    .lp-btn-ghost:hover { border-color: #999; color: #0a0a0a; }
+    .lp-btn-solid {
+      padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      border: none; background: #0a0a0a; color: #fff; cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+    .lp-btn-solid:hover { background: #222; transform: translateY(-1px); }
+
+    /* ── Page ── */
+    .app-wrap { max-width: none; margin: 0 auto; padding: 36px max(24px, calc((100% - 1280px) / 2)) 80px; }
+    .app-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 28px; }
+    .app-head h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; }
+    .app-head p { font-size: 13px; color: #888; margin-top: 4px; }
+    .app-head-meta { font-size: 12px; color: #999; }
+
+    /* ── KPI cards ── */
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 22px; }
+    .kpi {
+      background: #fff; border: 1px solid #ececec; border-radius: 16px; padding: 22px 24px;
+      transition: border-color .2s, box-shadow .2s, transform .2s;
+    }
+    .kpi:hover { border-color: #ddd; box-shadow: 0 8px 24px rgba(0,0,0,0.05); transform: translateY(-2px); }
+    .kpi-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+    .kpi-label { font-size: 13px; color: #666; font-weight: 500; }
+    .kpi-icon { width: 38px; height: 38px; border-radius: 10px; background: #f3f3f3; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .kpi-icon svg { width: 18px; height: 18px; stroke: #0a0a0a; fill: none; stroke-width: 1.8; }
+    .kpi-val { font-size: 34px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-bottom: 14px; }
+    .kpi-trend { display: flex; align-items: center; gap: 6px; font-size: 11px; }
+    .kpi-trend svg { width: 13px; height: 13px; stroke: #16a34a; fill: none; stroke-width: 2.2; }
+    .kpi-trend .delta { font-weight: 800; color: #0a0a0a; }
+    .kpi-trend .cap { color: #999; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600; }
+
+    /* ── Chart panels ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .panel { background: #fff; border: 1px solid #ececec; border-radius: 16px; padding: 0; overflow: hidden; }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 24px; border-bottom: 1px solid #f2f2f2; }
+    .panel-title { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+    .panel-body { padding: 22px 24px 24px; }
+    .month-sel {
+      font-size: 13px; font-weight: 500; color: #333; padding: 7px 12px;
+      border: 1px solid #e4e4e4; border-radius: 8px; background: #fafafa; cursor: pointer; outline: none;
+    }
+    .month-sel:focus { border-color: #999; }
+
+    /* ── Chart ── */
+    .chart { width: 100%; height: auto; display: block; }
+    .grid-line { stroke: #f0f0f0; stroke-width: 1; }
+    .axis-lbl { fill: #aaa; font-size: 13px; font-family: inherit; }
+    .x-lbl { fill: #888; font-size: 13px; font-family: inherit; }
+    .bar { fill: #0a0a0a; }
+    .legend { display: flex; gap: 26px; align-items: center; margin-bottom: 6px; padding-left: 4px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; color: #555; }
+    .legend-swatch { width: 26px; height: 0; border-top: 3px solid #0a0a0a; }
+    .legend-swatch.dotted { border-top: 3px dotted #999; }
+
+    /* ── Wireframe badge ── */
+    .wf-badge {
+      position: fixed; right: 18px; bottom: 18px; z-index: 90;
+      background: #0a0a0a; color: #fff; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.06em; padding: 7px 14px; border-radius: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .lp-nav { padding: 0 24px; }
+      .lp-nav-links { display: none; }
+      .app-wrap { padding: 28px 20px 64px; }
+      .kpi-row { grid-template-columns: 1fr 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Shared Nav -->
+  <nav class="lp-nav">
+    <div class="lp-nav-brand" onclick="location.href='landing.html'">
+      <div class="lp-nav-brand-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div>
+        <div class="lp-nav-brand-name">FES DMS</div>
+        <div class="lp-nav-brand-sub">Document Management</div>
+      </div>
+    </div>
+    <div class="lp-nav-links">
+      <a class="lp-nav-link" href="about.html">About Us</a>
+      <a class="lp-nav-link lp-nav-link-active" href="dashboard.html">Dashboard</a>
+      <a class="lp-nav-link" href="documents.html">Documents</a>
+    </div>
+    <div class="lp-nav-cta">
+      <button class="lp-btn-ghost" onclick="location.href='dashboard.html'">Sign In</button>
+      <button class="lp-btn-solid" onclick="location.href='dashboard.html'">Get Started →</button>
+    </div>
+  </nav>
+
+  <div class="app-wrap">
+    <div class="app-head">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Organisation overview · Foundation for Ecological Security</p>
+      </div>
+      <div class="app-head-meta">Last updated: 03 Jun 2026, 10:24 AM</div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-top">
+          <div class="kpi-label">Total Documents</div>
+          <div class="kpi-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        </div>
+        <div class="kpi-val">2,847</div>
+        <div class="kpi-trend"><svg viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg><span class="delta">+8%</span><span class="cap">vs last month</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-top">
+          <div class="kpi-label">Total Organizations</div>
+          <div class="kpi-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        </div>
+        <div class="kpi-val">12</div>
+        <div class="kpi-trend"><svg viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg><span class="delta">+2</span><span class="cap">this quarter</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-top">
+          <div class="kpi-label">Total Users</div>
+          <div class="kpi-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        </div>
+        <div class="kpi-val">47</div>
+        <div class="kpi-trend"><svg viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg><span class="delta">+3</span><span class="cap">this month</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-top">
+          <div class="kpi-label">Total Downloads</div>
+          <div class="kpi-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+        </div>
+        <div class="kpi-val">4,218</div>
+        <div class="kpi-trend"><svg viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg><span class="delta">+15%</span><span class="cap">vs last month</span></div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid-2">
+
+      <!-- Theme-wise Distribution -->
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Theme-wise Distribution</div>
+        </div>
+        <div class="panel-body">
+          <svg class="chart" viewBox="0 0 520 300" preserveAspectRatio="xMidYMid meet">
+            <!-- gridlines + y labels -->
+            <line class="grid-line" x1="50" y1="20"  x2="510" y2="20"/>
+            <line class="grid-line" x1="50" y1="77.5" x2="510" y2="77.5"/>
+            <line class="grid-line" x1="50" y1="135" x2="510" y2="135"/>
+            <line class="grid-line" x1="50" y1="192.5" x2="510" y2="192.5"/>
+            <line class="grid-line" x1="50" y1="250" x2="510" y2="250"/>
+            <text class="axis-lbl" x="38" y="24"  text-anchor="end">100</text>
+            <text class="axis-lbl" x="38" y="81.5" text-anchor="end">75</text>
+            <text class="axis-lbl" x="38" y="139" text-anchor="end">50</text>
+            <text class="axis-lbl" x="38" y="196.5" text-anchor="end">25</text>
+            <text class="axis-lbl" x="38" y="254" text-anchor="end">0</text>
+            <!-- bars -->
+            <rect class="bar" x="63"  y="187.9" width="50" height="62.1" rx="3"/>
+            <rect class="bar" x="140" y="213.2" width="50" height="36.8" rx="3"/>
+            <rect class="bar" x="217" y="231.6" width="50" height="18.4" rx="3"/>
+            <rect class="bar" x="293" y="236.2" width="50" height="13.8" rx="3"/>
+            <rect class="bar" x="370" y="243.1" width="50" height="6.9"  rx="3"/>
+            <rect class="bar" x="447" y="247.7" width="50" height="2.3"  rx="3"/>
+            <!-- x labels -->
+            <text class="x-lbl" x="88"  y="272" text-anchor="middle">Forest</text>
+            <text class="x-lbl" x="165" y="272" text-anchor="middle">Water</text>
+            <text class="x-lbl" x="242" y="272" text-anchor="middle">Wildlife</text>
+            <text class="x-lbl" x="318" y="272" text-anchor="middle">Agri.</text>
+            <text class="x-lbl" x="395" y="272" text-anchor="middle">Energy</text>
+            <text class="x-lbl" x="472" y="272" text-anchor="middle">Transport</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Upload & Download Activity -->
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Upload &amp; Download Activity</div>
+        </div>
+        <div class="panel-body">
+          <div class="legend">
+            <div class="legend-item"><span class="legend-swatch"></span> UPLOADS</div>
+            <div class="legend-item"><span class="legend-swatch dotted"></span> DOWNLOADS</div>
+          </div>
+          <svg class="chart" viewBox="0 0 520 300" preserveAspectRatio="xMidYMid meet">
+            <!-- gridlines + y labels -->
+            <line class="grid-line" x1="50" y1="20"  x2="510" y2="20"/>
+            <line class="grid-line" x1="50" y1="77.5" x2="510" y2="77.5"/>
+            <line class="grid-line" x1="50" y1="135" x2="510" y2="135"/>
+            <line class="grid-line" x1="50" y1="192.5" x2="510" y2="192.5"/>
+            <line class="grid-line" x1="50" y1="250" x2="510" y2="250"/>
+            <text class="axis-lbl" x="40" y="24"  text-anchor="end">240</text>
+            <text class="axis-lbl" x="40" y="81.5" text-anchor="end">180</text>
+            <text class="axis-lbl" x="40" y="139" text-anchor="end">120</text>
+            <text class="axis-lbl" x="40" y="196.5" text-anchor="end">60</text>
+            <text class="axis-lbl" x="40" y="254" text-anchor="end">0</text>
+            <!-- downloads (dotted) -->
+            <polyline points="70,136.9 210,117.75 350,130.2 490,106.25"
+                      fill="none" stroke="#999" stroke-width="2.5" stroke-dasharray="2 5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="70"  cy="136.9"  r="5" fill="#777"/>
+            <circle cx="210" cy="117.75" r="5" fill="#777"/>
+            <circle cx="350" cy="130.2"  r="5" fill="#777"/>
+            <circle cx="490" cy="106.25" r="5" fill="#777"/>
+            <!-- uploads (solid) -->
+            <polyline points="70,91.9 210,69.8 350,85.2 490,53.5"
+                      fill="none" stroke="#0a0a0a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="70"  cy="91.9" r="5.5" fill="#0a0a0a"/>
+            <circle cx="210" cy="69.8" r="5.5" fill="#0a0a0a"/>
+            <circle cx="350" cy="85.2" r="5.5" fill="#0a0a0a"/>
+            <circle cx="490" cy="53.5" r="5.5" fill="#0a0a0a"/>
+            <!-- x labels -->
+            <text class="x-lbl" x="70"  y="274" text-anchor="middle">1st Week</text>
+            <text class="x-lbl" x="210" y="274" text-anchor="middle">2nd Week</text>
+            <text class="x-lbl" x="350" y="274" text-anchor="middle">3rd Week</text>
+            <text class="x-lbl" x="490" y="274" text-anchor="middle">4th Week</text>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="wf-badge">FES DMS V1.0 — WIREFRAME</div>
+
+</body>
+</html>

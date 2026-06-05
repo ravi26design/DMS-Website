@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documents — FES DMS</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #0a0a0a; background: #f7f7f7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Shared Nav ── */
+    .lp-nav {
+      position: sticky; top: 0;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0 max(24px, calc((100% - 1280px) / 2)); height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      z-index: 100;
+    }
+    .lp-nav-brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .lp-nav-brand-icon {
+      width: 34px; height: 34px; background: #0a0a0a; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lp-nav-brand-icon svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 1.8; }
+    .lp-nav-brand-name { font-size: 15px; font-weight: 800; letter-spacing: -0.02em; color: #0a0a0a; }
+    .lp-nav-brand-sub { font-size: 10px; color: #888; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 1px; }
+    .lp-nav-links { display: flex; gap: 32px; }
+    .lp-nav-link { font-size: 13px; font-weight: 500; color: #555; text-decoration: none; cursor: pointer; transition: color .15s; }
+    .lp-nav-link:hover { color: #0a0a0a; }
+    .lp-nav-link-active { color: #0a0a0a; font-weight: 700; }
+    .lp-nav-cta { display: flex; align-items: center; gap: 12px; }
+    .lp-btn-ghost {
+      padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      border: 1px solid #ddd; background: transparent; cursor: pointer; color: #333;
+      transition: border-color .15s, color .15s;
+    }
+    .lp-btn-ghost:hover { border-color: #999; color: #0a0a0a; }
+    .lp-btn-solid {
+      padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      border: none; background: #0a0a0a; color: #fff; cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+    .lp-btn-solid:hover { background: #222; transform: translateY(-1px); }
+
+    /* ── Page ── */
+    .app-wrap { max-width: none; margin: 0 auto; padding: 36px max(24px, calc((100% - 1280px) / 2)) 64px; }
+    .app-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 24px; }
+    .app-head h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; }
+    .app-head p { font-size: 13px; color: #888; margin-top: 4px; }
+
+    /* ── Toolbar ── */
+    .toolbar {
+      background: #fff; border: 1px solid #ececec; border-radius: 14px;
+      padding: 14px 16px; display: flex; align-items: center; gap: 12px;
+      margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .search-box { flex: 1; min-width: 220px; display: flex; align-items: center; gap: 8px;
+      background: #f4f4f4; border-radius: 8px; padding: 9px 12px; }
+    .search-box svg { width: 15px; height: 15px; stroke: #999; fill: none; stroke-width: 2; }
+    .search-box input { border: none; background: transparent; outline: none; font-size: 13px; width: 100%; color: #0a0a0a; }
+    .filter-sel {
+      font-size: 13px; padding: 9px 12px; border: 1px solid #e4e4e4; border-radius: 8px;
+      background: #fff; color: #444; cursor: pointer; outline: none;
+    }
+    .filter-sel:focus { border-color: #999; }
+
+    /* ── Table ── */
+    .table-wrap { background: #fff; border: 1px solid #ececec; border-radius: 14px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      text-align: left; font-size: 11px; font-weight: 700; letter-spacing: .05em;
+      text-transform: uppercase; color: #999; padding: 14px 18px;
+      border-bottom: 1px solid #f0f0f0; background: #fafafa;
+    }
+    tbody td { padding: 14px 18px; font-size: 13px; border-bottom: 1px solid #f4f4f4; vertical-align: middle; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr { transition: background .12s; }
+    tbody tr:hover { background: #fafafa; }
+    .doc-cell { display: flex; align-items: center; gap: 12px; }
+    .ft-tag { font-size: 10px; font-weight: 800; letter-spacing: .03em; padding: 4px 7px; border-radius: 5px; color: #fff; flex-shrink: 0; }
+    .doc-name { font-weight: 600; color: #0a0a0a; }
+    .doc-sub { font-size: 11px; color: #aaa; margin-top: 1px; }
+    .theme-tag { font-size: 12px; color: #555; }
+    .uploader { display: flex; align-items: center; gap: 8px; }
+    .uploader-ava { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; }
+    .vis { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 12px; }
+    .vis.public { color: #16a34a; background: #e8fef0; }
+    .vis.private { color: #6b7280; background: #f0f0f0; }
+    .pill { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 12px; white-space: nowrap; }
+    .pill.approved { color: #16a34a; background: #e8fef0; }
+    .pill.pending { color: #d97706; background: #fef3e2; }
+    .pill.rejected { color: #dc2626; background: #fdeaea; }
+    .pill.change { color: #6366f1; background: #eef0fe; }
+
+    .table-foot { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; font-size: 12px; color: #999; }
+    .pager { display: flex; gap: 6px; }
+    .pager button { border: 1px solid #e4e4e4; background: #fff; border-radius: 7px; padding: 6px 11px; font-size: 12px; cursor: pointer; color: #555; }
+    .pager button.active { background: #0a0a0a; color: #fff; border-color: #0a0a0a; }
+    .pager button:hover:not(.active) { border-color: #999; }
+    .empty { padding: 48px; text-align: center; color: #aaa; font-size: 13px; }
+
+    /* ── Header actions ── */
+    .head-actions { display: flex; align-items: center; gap: 12px; }
+    .ctrl-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px; border: 1px solid #e4e4e4; border-radius: 10px;
+      background: #fff; font-size: 14px; font-weight: 500; color: #333; cursor: pointer;
+      transition: border-color .15s; white-space: nowrap;
+    }
+    .ctrl-btn:hover { border-color: #999; }
+    .ctrl-btn.active { background: #0a0a0a; border-color: #0a0a0a; color: #fff; }
+    .ctrl-btn.active svg { stroke: #fff; }
+    .ctrl-btn svg { width: 16px; height: 16px; stroke: #555; fill: none; stroke-width: 2; transition: stroke .15s; }
+    .ctrl-btn .chev { width: 14px; height: 14px; transition: transform .2s; }
+    .ctrl-btn.active .chev { transform: rotate(180deg); }
+    .adv-search {
+      position: relative;
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; border: 1px solid #e4e4e4; border-radius: 10px; background: #fff;
+      min-width: 280px; transition: border-color .15s;
+    }
+    .adv-search:focus-within { border-color: #999; }
+    .adv-search svg { width: 16px; height: 16px; stroke: #999; fill: none; stroke-width: 2; flex-shrink: 0; }
+    .adv-search input { border: none; outline: none; background: transparent; font-size: 14px; width: 100%; color: #0a0a0a; }
+    .search-suggest {
+      position: absolute; top: calc(100% + 8px); right: 0; left: auto; width: 400px; max-width: 88vw;
+      background: #fff; border: 1px solid #e6e6e6; border-radius: 12px;
+      box-shadow: 0 14px 36px rgba(0,0,0,.14); padding: 6px; z-index: 200;
+      max-height: 400px; overflow-y: auto;
+    }
+    .ss-item { display: flex; align-items: center; gap: 13px; padding: 11px 14px; border-radius: 8px; cursor: pointer; }
+    .ss-item:hover { background: #f4f4f6; }
+    .ss-ficon { width: 28px; height: 28px; border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .ss-ficon svg { width: 15px; height: 15px; }
+    .ss-body { flex: 1; min-width: 0; }
+    .ss-name { display: block; font-size: 14px; color: #202124; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ss-sub { display: block; font-size: 12px; color: #9aa0a6; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ss-date { font-size: 13px; color: #5f6368; flex-shrink: 0; margin-left: 12px; }
+    .ss-empty { padding: 22px 14px; text-align: center; color: #999; font-size: 13px; }
+    .view-toggle { display: flex; border: 1px solid #e4e4e4; border-radius: 10px; overflow: hidden; }
+    .vt-btn { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: #fff; border: none; cursor: pointer; }
+    .vt-btn + .vt-btn { border-left: 1px solid #e4e4e4; }
+    .vt-btn svg { width: 18px; height: 18px; stroke: #555; fill: none; stroke-width: 2; }
+    .vt-btn.active { background: #0a0a0a; }
+    .vt-btn.active svg { stroke: #fff; }
+
+    /* ── Filter panel ── */
+    .filter-panel {
+      margin-bottom: 18px; border: 1px solid #e8e8e8; border-radius: 16px; overflow: hidden;
+      background-color: #fafafa;
+      background-image: repeating-linear-gradient(-45deg, rgba(0,0,0,0.022) 0 1px, transparent 1px 10px);
+    }
+    .fp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; padding: 26px; }
+    .fp-field { display: flex; flex-direction: column; gap: 9px; }
+    .fp-label { font-size: 13px; color: #555; font-weight: 500; }
+    .fp-select {
+      appearance: none; -webkit-appearance: none;
+      background-color: #fff; border: 1px solid #e4e4e4; border-radius: 11px;
+      padding: 15px 42px 15px 18px; font-size: 15px; font-weight: 700; color: #0a0a0a; cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 16px center; background-size: 15px;
+      transition: border-color .15s;
+    }
+    .fp-select:hover { border-color: #bbb; }
+    .fp-select:focus { outline: none; border-color: #0a0a0a; }
+    .fp-foot {
+      display: flex; justify-content: flex-end; gap: 12px;
+      padding: 18px 26px; border-top: 1px dashed #dcdcdc; background: rgba(255,255,255,0.45);
+    }
+    .fp-btn { padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform .1s, background .15s, border-color .15s; }
+    .fp-btn:hover { transform: translateY(-1px); }
+    .fp-btn-clear { border: 1px solid #ddd; background: #fff; color: #333; }
+    .fp-btn-clear:hover { border-color: #999; }
+    .fp-btn-apply { border: none; background: #0a0a0a; color: #fff; }
+    .fp-btn-apply:hover { background: #222; }
+
+    /* ── Grid view (file cards) ── */
+    .doc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .doc-card { background: #f5f6fa; border: 1px solid #ebedf2; border-radius: 14px; padding: 14px; cursor: pointer; transition: box-shadow .2s, border-color .2s; }
+    .doc-card:hover { border-color: #d6d9e2; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+    .dc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .dc-ficon { width: 26px; height: 26px; border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .dc-ficon svg { width: 15px; height: 15px; }
+    .dc-fname { flex: 1; font-size: 15px; font-weight: 600; color: #202124; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dc-more { flex-shrink: 0; color: #5f6368; display: flex; }
+    .dc-more svg { width: 18px; height: 18px; fill: currentColor; }
+    .dc-preview { background: #fff; border: 1px solid #e8eaed; border-radius: 8px; height: 188px; overflow: hidden; }
+    .pv { width: 100%; height: 100%; }
+    .pv-pad { padding: 16px; }
+    .pv-line { height: 5px; border-radius: 2px; background: #e4e6ea; margin-bottom: 8px; }
+    .pv-line.t { height: 9px; width: 58%; background: #cdd1d8; margin-bottom: 14px; }
+    .pv-line.s { width: 72%; }
+    .pv-line.xs { width: 45%; }
+    .pv-num { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .pv-num span { width: 6px; height: 6px; border-radius: 50%; background: #cdd1d8; flex-shrink: 0; }
+    .pv-num .pv-line { flex: 1; margin-bottom: 0; }
+    .pv-sheet { background:
+      repeating-linear-gradient(#fff 0 16px, #e9eaec 16px 17px),
+      repeating-linear-gradient(90deg, #fff 0 25%, #e9eaec 25% calc(25% + 1px)); }
+    .pv-sheet-head { height: 17px; background: #0a0a0a; }
+    .pv-table { border: 1px solid #e4e6ea; border-radius: 3px; margin-top: 12px; }
+    .pv-trow { height: 14px; border-bottom: 1px solid #eceef1; }
+    .pv-trow:last-child { border-bottom: none; }
+    .dc-foot { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+    .dc-foot .uploader-ava { width: 26px; height: 26px; }
+    .dc-opened { font-size: 13px; color: #5f6368; }
+
+    @media (max-width: 900px) {
+      .lp-nav { padding: 0 24px; }
+      .lp-nav-links { display: none; }
+      .app-wrap { padding: 28px 16px 48px; }
+      .col-hide { display: none; }
+      thead th.col-hide, tbody td.col-hide { display: none; }
+      .app-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .head-actions { flex-wrap: wrap; }
+      .adv-search { min-width: 0; flex: 1; }
+      .doc-grid { grid-template-columns: 1fr; }
+      .fp-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .fp-foot { justify-content: stretch; }
+      .fp-btn { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Shared Nav -->
+  <nav class="lp-nav">
+    <div class="lp-nav-brand" onclick="location.href='landing.html'">
+      <div class="lp-nav-brand-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div>
+        <div class="lp-nav-brand-name">FES DMS</div>
+        <div class="lp-nav-brand-sub">Document Management</div>
+      </div>
+    </div>
+    <div class="lp-nav-links">
+      <a class="lp-nav-link" href="about.html">About Us</a>
+      <a class="lp-nav-link" href="dashboard.html">Dashboard</a>
+      <a class="lp-nav-link lp-nav-link-active" href="documents.html">Documents</a>
+    </div>
+    <div class="lp-nav-cta">
+      <button class="lp-btn-ghost" onclick="location.href='dashboard.html'">Sign In</button>
+      <button class="lp-btn-solid" onclick="location.href='dashboard.html'">Get Started →</button>
+    </div>
+  </nav>
+
+  <div class="app-wrap">
+    <div class="app-head">
+      <div>
+        <h1>Documents</h1>
+        <p>2,847 documents across 12 themes and 8 districts</p>
+      </div>
+      <div class="head-actions">
+        <button class="ctrl-btn" id="filterBtn" onclick="toggleFilters()">
+          <svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          Filter
+          <svg class="chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="adv-search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="search" type="text" placeholder="Search Documents" autocomplete="off" oninput="renderSuggest()" onfocus="renderSuggest()" />
+          <div class="search-suggest" id="searchSuggest" style="display:none"></div>
+        </div>
+        <div class="view-toggle">
+          <button class="vt-btn active" id="viewGrid" onclick="setView('grid')" title="Grid view">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          </button>
+          <button class="vt-btn" id="viewList" onclick="setView('list')" title="List view">
+            <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Collapsible filter panel -->
+    <div class="filter-panel" id="filterPanel" style="display:none">
+      <div class="fp-grid">
+        <div class="fp-field">
+          <label class="fp-label">Theme</label>
+          <select class="fp-select" id="f-theme">
+            <option value="">All Themes</option>
+            <option>Natural Resource Management</option>
+            <option>Forest &amp; Biodiversity</option>
+            <option>Water &amp; Watershed</option>
+            <option>Livelihoods</option>
+            <option>Land &amp; Tenure Rights</option>
+          </select>
+        </div>
+        <div class="fp-field">
+          <label class="fp-label">File Type</label>
+          <select class="fp-select" id="f-type">
+            <option value="">All Types</option>
+            <option>PDF</option><option>DOCX</option><option>XLSX</option><option>PPTX</option>
+          </select>
+        </div>
+        <div class="fp-field">
+          <label class="fp-label">Category</label>
+          <select class="fp-select" id="f-category">
+            <option value="">All Categories</option>
+            <option>Report</option><option>Survey</option><option>Plan</option>
+            <option>Brief</option><option>Data</option><option>Presentation</option><option>Notes</option>
+          </select>
+        </div>
+        <div class="fp-field">
+          <label class="fp-label">Uploaded By</label>
+          <select class="fp-select" id="f-uploader">
+            <option value="">All Uploaders</option>
+            <option>Anjali Kumar</option>
+            <option>Ravi Sharma</option>
+            <option>Priya Menon</option>
+            <option>Suresh Das</option>
+            <option>Neha Verma</option>
+          </select>
+        </div>
+      </div>
+      <div class="fp-foot">
+        <button class="fp-btn fp-btn-clear" onclick="clearFilters()">Clear Filters</button>
+        <button class="fp-btn fp-btn-apply" onclick="filterRows()">Apply Filters</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Document</th>
+            <th class="col-hide">Theme</th>
+            <th class="col-hide">Uploaded By</th>
+            <th class="col-hide">Date</th>
+          </tr>
+        </thead>
+        <tbody id="docs">
+          <tr data-theme="Water &amp; Watershed" data-type="PDF" data-status="Pending" data-category="Survey" data-visibility="Public">
+            <td><div class="doc-cell"><span class="ft-tag" style="background:#0a0a0a">PDF</span><div><div class="doc-name">Watershed Survey 2026.pdf</div></div></div></td>
+            <td class="col-hide"><span class="theme-tag">Water &amp; Watershed</span></td>
+            <td class="col-hide"><div class="uploader"><span class="uploader-ava" style="background:#555">AK</span>Anjali Kumar</div></td>
+            <td class="col-hide">02 Jun 2026</td>
+          </tr>
+          <tr data-theme="Forest &amp; Biodiversity" data-type="DOCX" data-status="Approved" data-category="Report" data-visibility="Public">
+            <td><div class="doc-cell"><span class="ft-tag" style="background:#0a0a0a">DOCX</span><div><div class="doc-name">Forest Cover Report Q1.docx</div></div></div></td>
+            <td class="col-hide"><span class="theme-tag">Forest &amp; Biodiversity</span></td>
+            <td class="col-hide"><div class="uploader"><span class="uploader-ava" style="background:#555">RS</span>Ravi Sharma</div></td>
+            <td class="col-hide">01 Jun 2026</td>
+          </tr>
+          <tr data-theme="Livelihoods" data-type="XLSX" data-status="Request to Change" data-category="Data" data-visibility="Private">
+            <td><div class="doc-cell"><span class="ft-tag" style="background:#0a0a0a">XLSX</span><div><div class="doc-name">Livelihood Baseline.xlsx</div></div></div></td>
+            <td class="col-hide"><span class="theme-tag">Livelihoods</span></td>
+            <td class="col-hide"><div class="uploader"><span class="uploader-ava" style="background:#555">PM</span>Priya Menon</div></td>
+            <td class="col-hide">31 May 2026</td>
+          </tr>
+          <tr data-theme="Land &amp; Tenure Rights" data-type="PPTX" data-status="Approved" data-category="Brief" data-visibility="Public">
+            <td><div class="doc-cell"><span class="ft-tag" style="background:#0a0a0a">PPTX</span><div><div class="doc-name">Land Rights Brief.pptx</div></div></div></td>
+            <td class="col-hide"><span class="theme-tag">Land &amp; Tenure Rights</span></td>
+            <td class="col-hide"><div class="uploader"><span class="uploader-ava" style="background:#555">SD</span>Suresh Das</div></td>
+            <td class="col-hide">30 May 2026</td>
+          </tr>
+          <tr data-theme="Natural Resource Management" data-type="PDF" data-status="Rejected" data-category="Notes" data-visibility="Private">
+            <td><div class="doc-cell"><span class="ft-tag" style="background:#0a0a0a">PDF</span><div><div class="doc-name">Draft Notes.pdf</div></div></div></td>
+            <td class="col-hide"><span class="theme-tag">Natural Resource Management</span></td>
+            <td class="col-hide"><div class="uploader"><span class="uploader-ava" style="background:#555">NV</span>Neha Verma</div></td>
+            <td class="col-hide">29 May 2026</td>
+          </tr>
+          <tr data-theme="Natural Resource Management" data-type="PDF" data-status="Approved" data-category="Plan" data-visibility="Public">
+            <td><div class="doc-cell"><span class="ft-tag" style="background:#0a0a0a">PDF</span><div><div class="doc-name">NRM Annual Plan 2026.pdf</div></div></div></td>
+            <td class="col-hide"><span class="theme-tag">Natural Resource Management</span></td>
+            <td class="col-hide"><div class="uploader"><span class="uploader-ava" style="background:#555">RS</span>Ravi Sharma</div></td>
+            <td class="col-hide">28 May 2026</td>
+          </tr>
+          <tr data-theme="Water &amp; Watershed" data-type="XLSX" data-status="Approved" data-category="Data" data-visibility="Public">
+            <td><div class="doc-cell"><span class="ft-tag" style="background:#0a0a0a">XLSX</span><div><div class="doc-name">Rainfall Data Compilation.xlsx</div></div></div></td>
+            <td class="col-hide"><span class="theme-tag">Water &amp; Watershed</span></td>
+            <td class="col-hide"><div class="uploader"><span class="uploader-ava" style="background:#555">AK</span>Anjali Kumar</div></td>
+            <td class="col-hide">27 May 2026</td>
+          </tr>
+          <tr data-theme="Forest &amp; Biodiversity" data-type="PPTX" data-status="Pending" data-category="Presentation" data-visibility="Private">
+            <td><div class="doc-cell"><span class="ft-tag" style="background:#0a0a0a">PPTX</span><div><div class="doc-name">Biodiversity Awareness Deck.pptx</div></div></div></td>
+            <td class="col-hide"><span class="theme-tag">Forest &amp; Biodiversity</span></td>
+            <td class="col-hide"><div class="uploader"><span class="uploader-ava" style="background:#555">PM</span>Priya Menon</div></td>
+            <td class="col-hide">26 May 2026</td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="empty" class="empty" style="display:none">No documents match your filters.</div>
+      <div class="table-foot">
+        <span id="count">Showing 8 of 2,847 documents</span>
+        <div class="pager">
+          <button>‹</button>
+          <button class="active">1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>…</button>
+          <button>356</button>
+          <button>›</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid view -->
+    <div class="doc-grid" id="docGrid" style="display:none"></div>
+  </div>
+
+  <script>
+    var currentView = 'grid';
+    function norm(s){ return (s||'').replace(/&amp;/g,'&').toLowerCase().trim(); }
+
+    function slugify(s){ return s.replace(/\.[a-z0-9]+$/i,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
+    function renderSuggest() {
+      var box = document.getElementById('searchSuggest');
+      var q = norm(document.getElementById('search').value);
+      if (!q) { box.style.display = 'none'; box.innerHTML = ''; return; }
+      var matches = [];
+      document.querySelectorAll('#docs tr').forEach(function(r){
+        var name = r.querySelector('.doc-name').textContent;
+        if (norm(name).indexOf(q) > -1) matches.push(r);
+      });
+      if (!matches.length) {
+        box.innerHTML = '<div class="ss-empty">No documents found</div>';
+      } else {
+        box.innerHTML = matches.map(function(r){
+          var type = r.querySelector('.ft-tag').textContent.trim();
+          var name = r.querySelector('.doc-name').textContent;
+          var upEl = r.querySelector('.uploader');
+          var person = upEl ? upEl.childNodes[upEl.childNodes.length - 1].textContent.trim() : '';
+          var dd = r.querySelector('td:last-child').textContent.trim().split(' ');
+          var date = dd[1] + ' ' + parseInt(dd[0], 10);
+          var ic = fileIcon(type);
+          return '<div class="ss-item" data-id="' + slugify(name) + '" onclick="selectSuggest(this)">'
+            + '<span class="ss-ficon" style="background:' + ic.bg + '">' + ic.html + '</span>'
+            + '<span class="ss-body"><span class="ss-name">' + name + '</span><span class="ss-sub">' + person + '</span></span>'
+            + '<span class="ss-date">' + date + '</span></div>';
+        }).join('');
+      }
+      box.style.display = 'block';
+    }
+    function selectSuggest(el) {
+      window.location.href = 'document-detail.html?id=' + el.getAttribute('data-id');
+    }
+    document.addEventListener('click', function(e){
+      if (!e.target.closest('.adv-search')) {
+        var box = document.getElementById('searchSuggest');
+        if (box) box.style.display = 'none';
+      }
+    });
+
+    function toggleFilters() {
+      var p = document.getElementById('filterPanel');
+      var btn = document.getElementById('filterBtn');
+      var open = p.style.display === 'none';
+      p.style.display = open ? 'block' : 'none';
+      btn.classList.toggle('active', open);
+    }
+
+    function clearFilters() {
+      document.getElementById('f-theme').value = '';
+      document.getElementById('f-type').value = '';
+      document.getElementById('f-category').value = '';
+      document.getElementById('f-uploader').value = '';
+      document.getElementById('search').value = '';
+      document.getElementById('searchSuggest').style.display = 'none';
+      filterRows();
+    }
+
+    function setView(mode) {
+      currentView = mode;
+      document.getElementById('viewList').classList.toggle('active', mode === 'list');
+      document.getElementById('viewGrid').classList.toggle('active', mode === 'grid');
+      document.querySelector('.table-wrap').style.display = mode === 'list' ? '' : 'none';
+      document.getElementById('docGrid').style.display = mode === 'grid' ? 'grid' : 'none';
+      filterRows();
+    }
+
+    function fileIcon(type){
+      if (type === 'PDF')  return { bg:'#0a0a0a', html:'<span style="color:#fff;font-size:8px;font-weight:800;letter-spacing:.3px">PDF</span>' };
+      if (type === 'XLSX') return { bg:'#0a0a0a', html:'<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="1"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="11" y1="4" x2="11" y2="20"/></svg>' };
+      if (type === 'PPTX') return { bg:'#0a0a0a', html:'<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="4" y="5" width="16" height="12" rx="1"/><line x1="12" y1="17" x2="12" y2="21"/></svg>' };
+      return { bg:'#0a0a0a', html:'<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg>' };
+    }
+    function previewHTML(type){
+      if (type === 'XLSX') return '<div class="pv pv-sheet"><div class="pv-sheet-head"></div></div>';
+      if (type === 'PDF')  return '<div class="pv pv-pad"><div class="pv-line t" style="margin-left:auto;margin-right:auto;width:55%"></div><div class="pv-line s"></div><div class="pv-line"></div><div class="pv-line xs"></div><div class="pv-table"><div class="pv-trow"></div><div class="pv-trow"></div><div class="pv-trow"></div><div class="pv-trow"></div></div></div>';
+      if (type === 'PPTX') return '<div class="pv pv-pad"><div style="height:74px;background:#eef0f3;border-radius:4px;margin-bottom:12px"></div><div class="pv-line s"></div><div class="pv-line xs"></div></div>';
+      return '<div class="pv pv-pad"><div class="pv-line t"></div><div class="pv-line"></div><div class="pv-line s"></div><div class="pv-line"></div><div class="pv-num"><span></span><div class="pv-line"></div></div><div class="pv-num"><span></span><div class="pv-line"></div></div><div class="pv-num"><span></span><div class="pv-line"></div></div></div>';
+    }
+    function renderGrid(visibleRows) {
+      var grid = document.getElementById('docGrid');
+      if (!visibleRows.length) {
+        grid.innerHTML = '<div class="empty" style="grid-column:1/-1">No documents match your filters.</div>';
+        return;
+      }
+      grid.innerHTML = visibleRows.map(function(r){
+        var type = r.querySelector('.ft-tag').textContent.trim();
+        var name = r.querySelector('.doc-name').textContent;
+        var upEl = r.querySelector('.uploader');
+        var person = upEl.childNodes[upEl.childNodes.length - 1].textContent.trim();
+        var p = person.split(' ');
+        var initials = (p[0].charAt(0) + (p.length > 1 ? p[p.length - 1].charAt(0) : '')).toUpperCase();
+        var ava = '<span class="uploader-ava" style="background:#555">' + initials + '</span>';
+        var d = r.querySelector('td:last-child').textContent.trim().split(' ');
+        var opened = d[1] + ' ' + parseInt(d[0], 10);
+        var ic = fileIcon(type);
+        return '<div class="doc-card">'
+          + '<div class="dc-head">'
+          +   '<span class="dc-ficon" style="background:' + ic.bg + '">' + ic.html + '</span>'
+          +   '<span class="dc-fname">' + name + '</span>'
+          +   '<span class="dc-more"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></span>'
+          + '</div>'
+          + '<div class="dc-preview">' + previewHTML(type) + '</div>'
+          + '<div class="dc-foot">' + ava + '<span class="dc-opened">' + person + ' · ' + opened + '</span></div>'
+          + '</div>';
+      }).join('');
+    }
+
+    function filterRows() {
+      var th = norm(document.getElementById('f-theme').value);
+      var ty = norm(document.getElementById('f-type').value);
+      var ca = norm(document.getElementById('f-category').value);
+      var up = norm(document.getElementById('f-uploader').value);
+      var rows = document.querySelectorAll('#docs tr');
+      var shown = 0;
+      var visible = [];
+      rows.forEach(function(r){
+        var rowTheme = norm(r.getAttribute('data-theme'));
+        var rowType = norm(r.getAttribute('data-type'));
+        var rowCat = norm(r.getAttribute('data-category'));
+        var upEl = r.querySelector('.uploader');
+        var rowUp = upEl ? norm(upEl.childNodes[upEl.childNodes.length - 1].textContent) : '';
+        var ok = (!th || rowTheme === th)
+          && (!ty || rowType === ty)
+          && (!ca || rowCat === ca)
+          && (!up || rowUp === up);
+        r.style.display = ok ? '' : 'none';
+        if (ok) { shown++; visible.push(r); }
+      });
+      document.getElementById('empty').style.display = shown ? 'none' : 'block';
+      document.getElementById('count').textContent = 'Showing ' + shown + ' of 2,847 documents';
+      if (currentView === 'grid') renderGrid(visible);
+    }
+
+    // Initialise default view
+    setView('grid');
+  </script>
+
+</body>
+</html>

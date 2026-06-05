@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document — FES DMS</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #0a0a0a; background: #f7f7f7; -webkit-font-smoothing: antialiased; }
+
+    /* ── Shared Nav ── */
+    .lp-nav {
+      position: sticky; top: 0; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid #f0f0f0; padding: 0 max(24px, calc((100% - 1280px) / 2)); height: 64px;
+      display: flex; align-items: center; justify-content: space-between; z-index: 100;
+    }
+    .lp-nav-brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .lp-nav-brand-icon { width: 34px; height: 34px; background: #0a0a0a; border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+    .lp-nav-brand-icon svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 1.8; }
+    .lp-nav-brand-name { font-size: 15px; font-weight: 800; letter-spacing: -0.02em; color: #0a0a0a; }
+    .lp-nav-brand-sub { font-size: 10px; color: #888; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 1px; }
+    .lp-nav-links { display: flex; gap: 32px; }
+    .lp-nav-link { font-size: 13px; font-weight: 500; color: #555; text-decoration: none; cursor: pointer; transition: color .15s; }
+    .lp-nav-link:hover { color: #0a0a0a; }
+    .lp-nav-link-active { color: #0a0a0a; font-weight: 700; }
+    .lp-nav-cta { display: flex; align-items: center; gap: 12px; }
+    .lp-btn-ghost { padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; border: 1px solid #ddd; background: transparent; cursor: pointer; color: #333; transition: border-color .15s, color .15s; }
+    .lp-btn-ghost:hover { border-color: #999; color: #0a0a0a; }
+    .lp-btn-solid { padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; border: none; background: #0a0a0a; color: #fff; cursor: pointer; transition: background .15s, transform .1s; }
+    .lp-btn-solid:hover { background: #222; transform: translateY(-1px); }
+
+    .app-wrap { max-width: none; margin: 0 auto; padding: 28px max(24px, calc((100% - 1280px) / 2)) 80px; }
+    .back { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: #666; text-decoration: none; margin-bottom: 22px; }
+    .back:hover { color: #0a0a0a; }
+    .back svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    .detail { background: #fff; border: 1px solid #ececec; border-radius: 18px; overflow: hidden; }
+    .detail-head { display: flex; align-items: center; gap: 18px; padding: 28px 30px; border-bottom: 1px solid #f2f2f2; }
+    .d-icon { width: 56px; height: 56px; border-radius: 12px; background: #0a0a0a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .d-icon svg { width: 28px; height: 28px; stroke: #fff; fill: none; stroke-width: 1.8; }
+    .d-icon span { color: #fff; font-size: 14px; font-weight: 800; letter-spacing: .5px; }
+    .d-head-text h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.25; }
+    .d-sub { font-size: 13px; color: #888; margin-top: 4px; }
+    .d-actions { margin-left: auto; display: flex; gap: 10px; flex-shrink: 0; }
+
+    .detail-body { display: grid; grid-template-columns: 1.1fr 1fr; gap: 0; }
+    .meta-grid { padding: 28px 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px 24px; align-content: start; }
+    .meta-l { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #999; display: block; margin-bottom: 5px; }
+    .meta-v { font-size: 15px; font-weight: 600; color: #0a0a0a; }
+    .meta-uploader { display: flex; align-items: center; gap: 9px; }
+    .meta-ava { width: 28px; height: 28px; border-radius: 50%; background: #555; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+    .preview-wrap { padding: 28px 30px; border-left: 1px solid #f2f2f2; }
+    .preview-box { background: #fafafa; border: 1px solid #eceef1; border-radius: 12px; height: 280px; overflow: hidden; }
+    .pv { width: 100%; height: 100%; }
+    .pv-pad { padding: 22px; }
+    .pv-line { height: 6px; border-radius: 3px; background: #e4e6ea; margin-bottom: 10px; }
+    .pv-line.t { height: 11px; width: 58%; background: #cdd1d8; margin-bottom: 18px; }
+    .pv-line.s { width: 72%; } .pv-line.xs { width: 45%; }
+    .pv-num { display: flex; gap: 9px; align-items: center; margin-bottom: 10px; }
+    .pv-num span { width: 7px; height: 7px; border-radius: 50%; background: #cdd1d8; flex-shrink: 0; }
+    .pv-num .pv-line { flex: 1; margin-bottom: 0; }
+    .pv-sheet { background: repeating-linear-gradient(#fff 0 22px, #e9eaec 22px 23px), repeating-linear-gradient(90deg, #fff 0 25%, #e9eaec 25% calc(25% + 1px)); }
+    .pv-sheet-head { height: 23px; background: #0a0a0a; }
+    .pv-table { border: 1px solid #e4e6ea; border-radius: 3px; margin-top: 14px; }
+    .pv-trow { height: 18px; border-bottom: 1px solid #eceef1; } .pv-trow:last-child { border-bottom: none; }
+
+    .notfound { background: #fff; border: 1px solid #ececec; border-radius: 18px; padding: 64px; text-align: center; color: #888; font-size: 15px; }
+
+    @media (max-width: 900px) {
+      .lp-nav { padding: 0 24px; } .lp-nav-links { display: none; }
+      .app-wrap { padding: 24px 20px 60px; }
+      .detail-head { flex-wrap: wrap; } .d-actions { margin-left: 0; width: 100%; }
+      .detail-body { grid-template-columns: 1fr; }
+      .preview-wrap { border-left: none; border-top: 1px solid #f2f2f2; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Shared Nav -->
+  <nav class="lp-nav">
+    <div class="lp-nav-brand" onclick="location.href='landing.html'">
+      <div class="lp-nav-brand-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div>
+        <div class="lp-nav-brand-name">FES DMS</div>
+        <div class="lp-nav-brand-sub">Document Management</div>
+      </div>
+    </div>
+    <div class="lp-nav-links">
+      <a class="lp-nav-link" href="about.html">About Us</a>
+      <a class="lp-nav-link" href="dashboard.html">Dashboard</a>
+      <a class="lp-nav-link lp-nav-link-active" href="documents.html">Documents</a>
+    </div>
+    <div class="lp-nav-cta">
+      <button class="lp-btn-ghost" onclick="location.href='dashboard.html'">Sign In</button>
+      <button class="lp-btn-solid" onclick="location.href='dashboard.html'">Get Started →</button>
+    </div>
+  </nav>
+
+  <div class="app-wrap">
+    <a class="back" href="documents.html"><svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back to Documents</a>
+    <div id="content"></div>
+  </div>
+
+  <script>
+    var DOCS = {
+      'watershed-survey-2026':    { name:'Watershed Survey 2026.pdf',        type:'PDF',  theme:'Water & Watershed',     category:'Survey',       uploader:'Anjali Kumar', date:'02 Jun 2026', visibility:'Public',  size:'2.4 MB', district:'Koraput District' },
+      'forest-cover-report-q1':   { name:'Forest Cover Report Q1.docx',      type:'DOCX', theme:'Forest & Biodiversity', category:'Report',       uploader:'Ravi Sharma',  date:'01 Jun 2026', visibility:'Public',  size:'1.1 MB', district:'Mayurbhanj District' },
+      'livelihood-baseline':      { name:'Livelihood Baseline.xlsx',         type:'XLSX', theme:'Livelihoods',           category:'Data',         uploader:'Priya Menon',  date:'31 May 2026', visibility:'Private', size:'820 KB', district:'Gajapati District' },
+      'land-rights-brief':        { name:'Land Rights Brief.pptx',           type:'PPTX', theme:'Land & Tenure Rights',  category:'Brief',        uploader:'Suresh Das',   date:'30 May 2026', visibility:'Public',  size:'4.7 MB', district:'Rayagada District' },
+      'draft-notes':              { name:'Draft Notes.pdf',                  type:'PDF',  theme:'Natural Resource Management', category:'Notes',  uploader:'Neha Verma',   date:'29 May 2026', visibility:'Private', size:'340 KB', district:'Koraput District' },
+      'nrm-annual-plan-2026':     { name:'NRM Annual Plan 2026.pdf',         type:'PDF',  theme:'Natural Resource Management', category:'Plan',   uploader:'Ravi Sharma',  date:'28 May 2026', visibility:'Public',  size:'3.2 MB', district:'Mayurbhanj District' },
+      'rainfall-data-compilation':{ name:'Rainfall Data Compilation.xlsx',   type:'XLSX', theme:'Water & Watershed',     category:'Data',         uploader:'Anjali Kumar', date:'27 May 2026', visibility:'Public',  size:'1.6 MB', district:'Gajapati District' },
+      'biodiversity-awareness-deck':{ name:'Biodiversity Awareness Deck.pptx',type:'PPTX',theme:'Forest & Biodiversity', category:'Presentation', uploader:'Priya Menon',  date:'26 May 2026', visibility:'Private', size:'5.9 MB', district:'Rayagada District' }
+    };
+
+    function fileIconHTML(type){
+      if (type === 'PDF')  return '<span>PDF</span>';
+      if (type === 'XLSX') return '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="1"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="11" y1="4" x2="11" y2="20"/></svg>';
+      if (type === 'PPTX') return '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="4" y="5" width="16" height="12" rx="1"/><line x1="12" y1="17" x2="12" y2="21"/></svg>';
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg>';
+    }
+    function previewHTML(type){
+      if (type === 'XLSX') return '<div class="pv pv-sheet"><div class="pv-sheet-head"></div></div>';
+      if (type === 'PDF')  return '<div class="pv pv-pad"><div class="pv-line t" style="margin-left:auto;margin-right:auto;width:55%"></div><div class="pv-line s"></div><div class="pv-line"></div><div class="pv-line xs"></div><div class="pv-table"><div class="pv-trow"></div><div class="pv-trow"></div><div class="pv-trow"></div><div class="pv-trow"></div></div></div>';
+      if (type === 'PPTX') return '<div class="pv pv-pad"><div style="height:110px;background:#eef0f3;border-radius:4px;margin-bottom:14px"></div><div class="pv-line s"></div><div class="pv-line xs"></div></div>';
+      return '<div class="pv pv-pad"><div class="pv-line t"></div><div class="pv-line"></div><div class="pv-line s"></div><div class="pv-line"></div><div class="pv-num"><span></span><div class="pv-line"></div></div><div class="pv-num"><span></span><div class="pv-line"></div></div><div class="pv-num"><span></span><div class="pv-line"></div></div></div>';
+    }
+    function initials(name){ var p = name.split(' '); return (p[0].charAt(0) + (p.length>1 ? p[p.length-1].charAt(0) : '')).toUpperCase(); }
+
+    (function(){
+      var m = location.search.match(/[?&]id=([^&]+)/);
+      var id = m ? decodeURIComponent(m[1]) : '';
+      var d = DOCS[id];
+      var el = document.getElementById('content');
+      if (!d) {
+        el.innerHTML = '<div class="notfound">Document not found. <a href="documents.html" style="color:#0a0a0a;font-weight:600">Return to Documents →</a></div>';
+        return;
+      }
+      el.innerHTML =
+        '<div class="detail">'
+        + '<div class="detail-head">'
+        +   '<div class="d-icon">' + fileIconHTML(d.type) + '</div>'
+        +   '<div class="d-head-text"><h1>' + d.name + '</h1><div class="d-sub">' + d.type + ' · ' + d.size + ' · ' + d.district + '</div></div>'
+        +   '<div class="d-actions"><button class="lp-btn-ghost">Share</button><button class="lp-btn-solid">Download</button></div>'
+        + '</div>'
+        + '<div class="detail-body">'
+        +   '<div class="meta-grid">'
+        +     '<div><span class="meta-l">Theme</span><span class="meta-v">' + d.theme + '</span></div>'
+        +     '<div><span class="meta-l">Category</span><span class="meta-v">' + d.category + '</span></div>'
+        +     '<div><span class="meta-l">Uploaded By</span><span class="meta-v meta-uploader"><span class="meta-ava">' + initials(d.uploader) + '</span>' + d.uploader + '</span></div>'
+        +     '<div><span class="meta-l">Upload Date</span><span class="meta-v">' + d.date + '</span></div>'
+        +     '<div><span class="meta-l">Visibility</span><span class="meta-v">' + d.visibility + '</span></div>'
+        +     '<div><span class="meta-l">File Size</span><span class="meta-v">' + d.size + '</span></div>'
+        +     '<div><span class="meta-l">District</span><span class="meta-v">' + d.district + '</span></div>'
+        +     '<div><span class="meta-l">File Type</span><span class="meta-v">' + d.type + '</span></div>'
+        +   '</div>'
+        +   '<div class="preview-wrap"><div class="preview-box">' + previewHTML(d.type) + '</div></div>'
+        + '</div>'
+        + '</div>';
+      document.title = d.name + ' — FES DMS';
+    })();
+  </script>
+
+</body>
+</html>

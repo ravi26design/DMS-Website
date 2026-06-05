@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — FES DMS</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #0a0a0a; background: #fff;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Shared Nav ── */
+    .lp-nav {
+      position: sticky; top: 0;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0 max(24px, calc((100% - 1280px) / 2)); height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      z-index: 100;
+    }
+    .lp-nav-brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .lp-nav-brand-icon {
+      width: 34px; height: 34px; background: #0a0a0a; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lp-nav-brand-icon svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 1.8; }
+    .lp-nav-brand-name { font-size: 15px; font-weight: 800; letter-spacing: -0.02em; color: #0a0a0a; }
+    .lp-nav-brand-sub { font-size: 10px; color: #888; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 1px; }
+    .lp-nav-links { display: flex; gap: 32px; }
+    .lp-nav-link { font-size: 13px; font-weight: 500; color: #555; text-decoration: none; cursor: pointer; transition: color .15s; }
+    .lp-nav-link:hover { color: #0a0a0a; }
+    .lp-nav-link-active { color: #0a0a0a; font-weight: 700; }
+    .lp-nav-cta { display: flex; align-items: center; gap: 12px; }
+    .lp-btn-ghost {
+      padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      border: 1px solid #ddd; background: transparent; cursor: pointer; color: #333;
+      transition: border-color .15s, color .15s;
+    }
+    .lp-btn-ghost:hover { border-color: #999; color: #0a0a0a; }
+    .lp-btn-solid {
+      padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      border: none; background: #0a0a0a; color: #fff; cursor: pointer;
+      transition: background .15s, transform .1s;
+    }
+    .lp-btn-solid:hover { background: #222; transform: translateY(-1px); }
+
+    /* ── Section shared ── */
+    .lp-section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #888; margin-bottom: 12px; text-align: center;
+    }
+    .lp-section-title {
+      font-size: 36px; font-weight: 800; letter-spacing: -0.03em; color: #0a0a0a;
+      text-align: center; margin-bottom: 12px;
+    }
+    .lp-section-sub {
+      font-size: 15px; color: #666; text-align: center; max-width: 560px;
+      margin: 0 auto 56px; line-height: 1.6;
+    }
+
+    /* ── Hero ── */
+    .ab-hero {
+      padding: 100px max(24px, calc((100% - 1280px) / 2)) 72px; text-align: center;
+      background: linear-gradient(180deg, #fafafa 0%, #fff 100%);
+      position: relative; overflow: hidden;
+    }
+    .ab-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(0,0,0,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .ab-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #f4f4f4; border: 1px solid #e8e8e8; border-radius: 20px;
+      padding: 4px 14px; font-size: 11px; font-weight: 600; color: #555;
+      letter-spacing: 0.04em; margin-bottom: 28px;
+    }
+    .ab-hero h1 {
+      font-size: 48px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.1;
+      max-width: 720px; margin: 0 auto 20px;
+    }
+    .ab-hero h1 em { font-style: normal; color: #555; }
+    .ab-hero p { font-size: 17px; color: #666; line-height: 1.6; max-width: 560px; margin: 0 auto; }
+
+    /* ── Mission ── */
+    .ab-mission { padding: 72px max(24px, calc((100% - 1280px) / 2)); background: #fff; }
+    .ab-mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 940px; margin: 0 auto; }
+    .ab-card { padding: 32px; border: 1px solid #f0f0f0; border-radius: 16px; background: #fafafa; }
+    .ab-card-icon {
+      width: 44px; height: 44px; background: #0a0a0a; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 18px;
+    }
+    .ab-card-icon svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 1.8; }
+    .ab-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.02em; }
+    .ab-card p { font-size: 14px; color: #666; line-height: 1.65; }
+
+    /* ── Story ── */
+    .ab-story { padding: 72px max(24px, calc((100% - 1280px) / 2)); background: #f7f7f7; }
+    .ab-story-inner { max-width: 720px; margin: 0 auto; }
+    .ab-story p { font-size: 15px; color: #444; line-height: 1.8; margin-bottom: 18px; }
+    .ab-story p:last-child { margin-bottom: 0; }
+    .ab-story b { color: #0a0a0a; font-weight: 700; }
+
+    /* ── Stats ── */
+    .ab-stats { padding: 64px max(24px, calc((100% - 1280px) / 2)); background: #0a0a0a; }
+    .ab-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; max-width: 900px; margin: 0 auto; text-align: center; }
+    .ab-stat-val { font-size: 38px; font-weight: 800; color: #fff; letter-spacing: -0.03em; }
+    .ab-stat-lbl { font-size: 13px; color: #888; margin-top: 6px; }
+
+    /* ── Values ── */
+    .ab-values { padding: 72px max(24px, calc((100% - 1280px) / 2)); background: #fff; }
+    .ab-values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1000px; margin: 0 auto; }
+    .ab-value { padding: 26px; border: 1px solid #f0f0f0; border-radius: 14px; background: #fafafa; transition: border-color .2s, transform .2s; }
+    .ab-value:hover { border-color: #ddd; transform: translateY(-3px); }
+    .ab-value-icon { width: 38px; height: 38px; background: #f0f0f0; border-radius: 9px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+    .ab-value-icon svg { width: 17px; height: 17px; stroke: #0a0a0a; fill: none; stroke-width: 2; }
+    .ab-value h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .ab-value p { font-size: 13px; color: #666; line-height: 1.6; }
+
+    /* ── CTA ── */
+    .lp-cta { padding: 80px max(24px, calc((100% - 1280px) / 2)); background: #0a0a0a; text-align: center; }
+    .lp-cta h2 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -0.03em; margin-bottom: 12px; }
+    .lp-cta p { font-size: 15px; color: #888; margin-bottom: 36px; }
+    .lp-cta-btn {
+      padding: 14px 40px; border-radius: 10px; font-size: 15px; font-weight: 700;
+      background: #fff; color: #0a0a0a; border: none; cursor: pointer;
+      transition: background .15s, transform .1s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .lp-cta-btn:hover { background: #f0f0f0; transform: translateY(-2px); }
+
+    /* ── Footer ── */
+    .lp-footer {
+      padding: 24px max(24px, calc((100% - 1280px) / 2)); background: #0a0a0a; border-top: 1px solid #1a1a1a;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .lp-footer-left, .lp-footer-right { font-size: 12px; color: #555; }
+
+    @media (max-width: 900px) {
+      .lp-nav { padding: 0 24px; }
+      .lp-nav-links { display: none; }
+      .ab-hero { padding: 72px 24px 56px; }
+      .ab-hero h1 { font-size: 34px; }
+      .ab-mission, .ab-story, .ab-values, .ab-stats, .lp-cta { padding: 56px 24px; }
+      .ab-mission-grid { grid-template-columns: 1fr; }
+      .ab-stats-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .ab-values-grid { grid-template-columns: 1fr; }
+      .lp-footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Shared Nav -->
+  <nav class="lp-nav">
+    <div class="lp-nav-brand" onclick="location.href='landing.html'">
+      <div class="lp-nav-brand-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </div>
+      <div>
+        <div class="lp-nav-brand-name">FES DMS</div>
+        <div class="lp-nav-brand-sub">Document Management</div>
+      </div>
+    </div>
+    <div class="lp-nav-links">
+      <a class="lp-nav-link lp-nav-link-active" href="about.html">About Us</a>
+      <a class="lp-nav-link" href="dashboard.html">Dashboard</a>
+      <a class="lp-nav-link" href="documents.html">Documents</a>
+    </div>
+    <div class="lp-nav-cta">
+      <button class="lp-btn-ghost" onclick="location.href='dashboard.html'">Sign In</button>
+      <button class="lp-btn-solid" onclick="location.href='dashboard.html'">Get Started →</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="ab-hero">
+    <div class="ab-badge">About FES DMS</div>
+    <h1>Helping field teams manage <em>ecological knowledge</em></h1>
+    <p>FES DMS is a purpose-built Document Management System for the Foundation for Ecological Security — bringing structure, security, and visibility to documents that drive ecological restoration across India.</p>
+  </section>
+
+  <!-- Mission & Vision -->
+  <section class="ab-mission">
+    <div class="ab-mission-grid">
+      <div class="ab-card">
+        <div class="ab-card-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <h3>Our Mission</h3>
+        <p>To give field organisations a single, reliable home for their documents — so that knowledge gathered across districts and themes is never lost, always discoverable, and securely shared with the right people.</p>
+      </div>
+      <div class="ab-card">
+        <div class="ab-card-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h3>Our Vision</h3>
+        <p>A future where every ecological field team — however remote — can collaborate on documents as easily as the largest organisation, with full transparency from upload to approval.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section class="ab-story">
+    <div class="lp-section-label">Our Story</div>
+    <h2 class="lp-section-title">Built for the field, from the field</h2>
+    <div class="ab-story-inner">
+      <p>The <b>Foundation for Ecological Security (FES)</b> works across thousands of villages on the restoration of land, water, and forests. With teams spread across districts and themes — from Natural Resource Management to Land &amp; Tenure Rights — documents were scattered across drives, inboxes, and devices.</p>
+      <p>FES DMS was created to change that. Instead of hunting for the latest version of a survey or a report, teams now have <b>one organised, searchable platform</b> with built-in approval workflows and role-based access — designed to work even in low-bandwidth environments.</p>
+      <p>Today it manages thousands of documents across multiple organisations and districts, giving moderators and administrators a clear, real-time view of everything happening on the ground.</p>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="ab-stats">
+    <div class="ab-stats-grid">
+      <div><div class="ab-stat-val">2,847+</div><div class="ab-stat-lbl">Documents Managed</div></div>
+      <div><div class="ab-stat-val">12</div><div class="ab-stat-lbl">Themes Covered</div></div>
+      <div><div class="ab-stat-val">8</div><div class="ab-stat-lbl">Districts Active</div></div>
+      <div><div class="ab-stat-val">47</div><div class="ab-stat-lbl">Active Users</div></div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="ab-values">
+    <div class="lp-section-label">What We Value</div>
+    <h2 class="lp-section-title">Principles that guide us</h2>
+    <p class="lp-section-sub">Every feature in FES DMS is shaped by the realities of field work.</p>
+    <div class="ab-values-grid">
+      <div class="ab-value">
+        <div class="ab-value-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h4>Security First</h4>
+        <p>Sensitive field data stays protected with role-based access and public/private visibility controls on every document.</p>
+      </div>
+      <div class="ab-value">
+        <div class="ab-value-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <h4>Simplicity</h4>
+        <p>Lightweight and fast, built to work for field teams on low-bandwidth connections without a steep learning curve.</p>
+      </div>
+      <div class="ab-value">
+        <div class="ab-value-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h4>Transparency</h4>
+        <p>A full audit trail means every upload, approval, and status change is logged and visible to the right people.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="lp-cta">
+    <h2>Ready to get started?</h2>
+    <p>Sign in and explore the full FES Document Management System.</p>
+    <button class="lp-cta-btn" onclick="location.href='dashboard.html'">
+      Sign In to FES DMS
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </section>
+
+  <!-- Footer -->
+  <footer class="lp-footer">
+    <div class="lp-footer-left">© 2026 Foundation for Ecological Security · FES DMS v1.0</div>
+    <div class="lp-footer-right">Wireframe Prototype</div>
+  </footer>
+
+</body>
+</html>
