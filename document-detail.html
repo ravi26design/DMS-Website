@@ -67,12 +67,19 @@
 
     .notfound { background: #fff; border: 1px solid #ececec; border-radius: 18px; padding: 64px; text-align: center; color: #888; font-size: 15px; }
 
+    .lp-footer { padding: 24px max(24px, calc((100% - 1280px) / 2)); background: #0a0a0a; border-top: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: space-between; }
+    .lp-footer-left { font-size: 12px; color: #555; }
+    .lp-footer-right { display: flex; gap: 24px; }
+    .lp-footer-right a { font-size: 12px; color: #888; text-decoration: none; transition: color .15s; }
+    .lp-footer-right a:hover { color: #fff; }
+
     @media (max-width: 900px) {
       .lp-nav { padding: 0 24px; } .lp-nav-links { display: none; }
       .app-wrap { padding: 24px 20px 60px; }
       .detail-head { flex-wrap: wrap; } .d-actions { margin-left: 0; width: 100%; }
       .detail-body { grid-template-columns: 1fr; }
       .preview-wrap { border-left: none; border-top: 1px solid #f2f2f2; }
+      .lp-footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
     }
   </style>
 </head>
@@ -105,6 +112,15 @@
     <a class="back" href="documents.html"><svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back to Documents</a>
     <div id="content"></div>
   </div>
+
+  <!-- Footer -->
+  <footer class="lp-footer">
+    <div class="lp-footer-left">© 2026 Foundation for Ecological Security · FES DMS v1.0</div>
+    <div class="lp-footer-right">
+      <a href="terms.html">Terms of Use</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </footer>
 
   <script>
     var DOCS = {

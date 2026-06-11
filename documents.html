@@ -211,6 +211,13 @@
     .dc-foot .uploader-ava { width: 26px; height: 26px; }
     .dc-opened { font-size: 13px; color: #5f6368; }
 
+    /* ── Footer ── */
+    .lp-footer { padding: 24px max(24px, calc((100% - 1280px) / 2)); background: #0a0a0a; border-top: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: space-between; }
+    .lp-footer-left { font-size: 12px; color: #555; }
+    .lp-footer-right { display: flex; gap: 24px; }
+    .lp-footer-right a { font-size: 12px; color: #888; text-decoration: none; transition: color .15s; }
+    .lp-footer-right a:hover { color: #fff; }
+
     @media (max-width: 900px) {
       .lp-nav { padding: 0 24px; }
       .lp-nav-links { display: none; }
@@ -224,6 +231,7 @@
       .fp-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
       .fp-foot { justify-content: stretch; }
       .fp-btn { flex: 1; }
+      .lp-footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
     }
   </style>
 </head>
@@ -407,6 +415,15 @@
     <!-- Grid view -->
     <div class="doc-grid" id="docGrid" style="display:none"></div>
   </div>
+
+  <!-- Footer -->
+  <footer class="lp-footer">
+    <div class="lp-footer-left">© 2026 Foundation for Ecological Security · FES DMS v1.0</div>
+    <div class="lp-footer-right">
+      <a href="terms.html">Terms of Use</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </footer>
 
   <script>
     var currentView = 'grid';
