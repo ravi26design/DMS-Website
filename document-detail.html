@@ -66,7 +66,10 @@
     .dv-side { position: relative; }
     .dv-side-head { display: flex; align-items: center; gap: 12px; padding: 22px 24px 6px; }
     .dv-collapse { position: absolute; left: -14px; top: 22px; width: 28px; height: 28px; border-radius: 50%; border: 1px solid #e4e4e4; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
-    .dv-collapse svg { width: 14px; height: 14px; stroke: #555; fill: none; stroke-width: 2; }
+    .dv-collapse svg { width: 14px; height: 14px; stroke: #555; fill: none; stroke-width: 2; transition: transform .2s; }
+    .dv-side.collapsed .dv-collapse svg { transform: rotate(180deg); }
+    .dv-side.collapsed .dv-fields { display: none; }
+    .dv-side.collapsed .dv-side-head { padding-bottom: 22px; }
     .dv-side-title { font-size: 18px; font-weight: 800; letter-spacing: -0.01em; }
     .dv-fields { padding: 14px 24px 28px; }
     .dv-field { padding: 16px 0; border-bottom: 1px solid #f4f4f4; }
@@ -169,6 +172,7 @@
     function initials(name){ var p = name.split(' '); return (p[0].charAt(0) + (p.length>1 ? p[p.length-1].charAt(0) : '')).toUpperCase(); }
     function isoDate(d){ var p = d.split(' '); return p[2] + '-' + (MONTHS[p[1]]||'01') + '-' + (p[0].length<2 ? '0'+p[0] : p[0]); }
     function tagIcon(){ return '<svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>'; }
+    function toggleDetails(){ document.querySelector('.dv-side').classList.toggle('collapsed'); }
 
     (function(){
       var m = location.search.match(/[?&]id=([^&]+)/);
@@ -220,7 +224,7 @@
 
         // Details panel
         + '<div class="dv-panel dv-side">'
-        +   '<button class="dv-collapse" title="Collapse"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>'
+        +   '<button class="dv-collapse" title="Collapse" onclick="toggleDetails()"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>'
         +   '<div class="dv-side-head"><span class="dv-side-title">Document Details</span></div>'
         +   '<div class="dv-fields">'
         +     '<div class="dv-field"><div class="dv-flabel">Theme</div><div class="dv-fval">' + d.theme + '</div></div>'
