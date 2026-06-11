@@ -36,6 +36,11 @@
     .legal li { font-size: 15px; color: #444; line-height: 1.8; }
     .legal a { color: #0a0a0a; font-weight: 600; }
 
+    .lp-cta { padding: 80px max(24px, calc((100% - 1280px) / 2)); background: #0a0a0a; text-align: center; }
+    .lp-cta h2 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -0.03em; margin-bottom: 12px; }
+    .lp-cta p { font-size: 15px; color: #888; margin-bottom: 36px; }
+    .lp-cta-btn { padding: 14px 40px; border-radius: 10px; font-size: 15px; font-weight: 700; background: #fff; color: #0a0a0a; border: none; cursor: pointer; transition: background .15s, transform .1s; display: inline-flex; align-items: center; gap: 8px; }
+    .lp-cta-btn:hover { background: #f0f0f0; transform: translateY(-2px); }
     .lp-footer { padding: 24px max(24px, calc((100% - 1280px) / 2)); background: #0a0a0a; border-top: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: space-between; }
     .lp-footer-left { font-size: 12px; color: #555; }
     .lp-footer-right { display: flex; gap: 24px; }
@@ -105,6 +110,16 @@
     <h2>8. Contact</h2>
     <p>Questions about these terms can be sent to us via the <a href="contact.html">Contact Us</a> page or at <a href="mailto:support@fes-dms.org">support@fes-dms.org</a>.</p>
   </article>
+
+  <!-- CTA -->
+  <section class="lp-cta">
+    <h2>Ready to get started?</h2>
+    <p>Sign in and explore the full FES Document Management System.</p>
+    <button class="lp-cta-btn" onclick="location.href='dashboard.html'">
+      Sign In to FES DMS
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </section>
 
   <footer class="lp-footer">
     <div class="lp-footer-left">© 2026 Foundation for Ecological Security · FES DMS v1.0</div>
