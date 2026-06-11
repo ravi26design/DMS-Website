@@ -69,8 +69,14 @@
     .dv-collapse { width: 32px; height: 32px; border-radius: 9px; border: 1px solid #e8e8e8; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: border-color .15s, background .15s; }
     .dv-collapse:hover { border-color: #bbb; background: #fafafa; }
     .dv-collapse svg { width: 16px; height: 16px; stroke: #555; fill: none; stroke-width: 2.2; transition: transform .2s; }
-    .dv-wrap.collapsed { grid-template-columns: 1fr; }
-    .dv-wrap.collapsed .dv-side { display: none; }
+    .dv-wrap.collapsed { grid-template-columns: minmax(0, 1fr) 56px; }
+    .dv-wrap.collapsed .dv-side-head,
+    .dv-wrap.collapsed .dv-fields { display: none; }
+    .dv-wrap.collapsed .dv-rail { display: flex; }
+    .dv-rail { display: none; width: 100%; min-height: 360px; flex-direction: column; align-items: center; gap: 18px; padding: 22px 0; background: #fff; border: none; border-radius: 18px; cursor: pointer; transition: background .15s; }
+    .dv-rail:hover { background: #fafafa; }
+    .dv-rail svg { width: 18px; height: 18px; stroke: #555; fill: none; stroke-width: 2; }
+    .dv-rail-label { writing-mode: vertical-rl; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #999; }
     .dv-side-title { font-size: 18px; font-weight: 800; letter-spacing: -0.01em; }
     .dv-fields { padding: 14px 24px 28px; }
     .dv-field { padding: 16px 0; border-bottom: 1px solid #f4f4f4; }
@@ -109,6 +115,9 @@
       .dv-bar { padding: 20px 20px 0; flex-wrap: wrap; }
       .dv-crumb { display: none; }
       .dv-wrap { grid-template-columns: 1fr; gap: 18px; padding: 18px 20px 8px; }
+      .dv-wrap.collapsed { grid-template-columns: 1fr; }
+      .dv-wrap.collapsed .dv-side { display: none; }
+      .dv-rail { display: none !important; }
       .dv-page { padding: 36px 26px 40px; } .dv-page-title { font-size: 28px; }
       .lp-cta { padding: 56px 24px; } .lp-cta h2 { font-size: 28px; }
       .lp-footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
@@ -230,6 +239,7 @@
 
         // Details panel
         + '<div class="dv-panel dv-side">'
+        +   '<button class="dv-rail" onclick="toggleDetails()" title="Expand details"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg><span class="dv-rail-label">Document Details</span></button>'
         +   '<div class="dv-side-head"><span class="dv-side-title">Document Details</span>'
         +     '<button class="dv-collapse" title="Collapse details" onclick="toggleDetails()"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>'
         +   '</div>'
