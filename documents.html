@@ -539,7 +539,7 @@
         var d = r.querySelector('td:last-child').textContent.trim().split(' ');
         var opened = d[1] + ' ' + parseInt(d[0], 10);
         var ic = fileIcon(type);
-        return '<div class="doc-card">'
+        return '<div class="doc-card" onclick="location.href=\'document-detail.html?id=' + slugify(name) + '\'">'
           + '<div class="dc-head">'
           +   '<span class="dc-ficon" style="background:' + ic.bg + '">' + ic.html + '</span>'
           +   '<span class="dc-fname">' + name + '</span>'
@@ -576,6 +576,14 @@
       document.getElementById('count').textContent = 'Showing ' + shown + ' of 2,847 documents';
       if (currentView === 'grid') renderGrid(visible);
     }
+
+    // Make table rows open the detail page
+    document.querySelectorAll('#docs tr').forEach(function(r){
+      r.style.cursor = 'pointer';
+      r.addEventListener('click', function(){
+        location.href = 'document-detail.html?id=' + slugify(r.querySelector('.doc-name').textContent);
+      });
+    });
 
     // Initialise default view
     setView('grid');
