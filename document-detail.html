@@ -37,6 +37,8 @@
     .dv-icon-btn { width: 44px; height: 44px; border: 1px solid #e4e4e4; border-radius: 12px; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: border-color .15s; }
     .dv-icon-btn:hover { border-color: #999; }
     .dv-icon-btn svg { width: 18px; height: 18px; stroke: #333; fill: none; stroke-width: 1.8; }
+    .dv-icon-btn.active { background: #0a0a0a; border-color: #0a0a0a; }
+    .dv-icon-btn.active svg { stroke: #fff; }
 
     /* ── Main grid ── */
     .dv-wrap { padding: 22px max(24px, calc((100% - 1280px) / 2)) 8px; display: grid; grid-template-columns: 1.75fr 1fr; gap: 22px; align-items: start; }
@@ -67,9 +69,8 @@
     .dv-collapse { width: 32px; height: 32px; border-radius: 9px; border: 1px solid #e8e8e8; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: border-color .15s, background .15s; }
     .dv-collapse:hover { border-color: #bbb; background: #fafafa; }
     .dv-collapse svg { width: 16px; height: 16px; stroke: #555; fill: none; stroke-width: 2.2; transition: transform .2s; }
-    .dv-side.collapsed .dv-collapse svg { transform: rotate(180deg); }
-    .dv-side.collapsed .dv-fields { display: none; }
-    .dv-side.collapsed .dv-side-head { padding-bottom: 22px; }
+    .dv-wrap.collapsed { grid-template-columns: 1fr; }
+    .dv-wrap.collapsed .dv-side { display: none; }
     .dv-side-title { font-size: 18px; font-weight: 800; letter-spacing: -0.01em; }
     .dv-fields { padding: 14px 24px 28px; }
     .dv-field { padding: 16px 0; border-bottom: 1px solid #f4f4f4; }
@@ -171,7 +172,12 @@
     function initials(name){ var p = name.split(' '); return (p[0].charAt(0) + (p.length>1 ? p[p.length-1].charAt(0) : '')).toUpperCase(); }
     function isoDate(d){ var p = d.split(' '); return p[2] + '-' + (MONTHS[p[1]]||'01') + '-' + (p[0].length<2 ? '0'+p[0] : p[0]); }
     function tagIcon(){ return '<svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>'; }
-    function toggleDetails(){ document.querySelector('.dv-side').classList.toggle('collapsed'); }
+    function toggleDetails(){
+      var wrap = document.querySelector('.dv-wrap');
+      wrap.classList.toggle('collapsed');
+      var btn = document.getElementById('sidebarToggle');
+      if (btn) btn.classList.toggle('active', wrap.classList.contains('collapsed'));
+    }
 
     (function(){
       var m = location.search.match(/[?&]id=([^&]+)/);
@@ -192,6 +198,7 @@
         + '<a class="dv-back" href="documents.html"><svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> DOCUMENTS</a>'
         + '<div class="dv-crumb"><span>Documents</span><span class="sep">›</span><span class="cur">' + d.name + '</span></div>'
         + '<div class="dv-actions">'
+        +   '<button class="dv-icon-btn" id="sidebarToggle" title="Toggle details" onclick="toggleDetails()"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="15" y1="4" x2="15" y2="20"/></svg></button>'
         +   '<button class="dv-icon-btn" title="Share"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>'
         +   '<button class="dv-icon-btn" title="Download"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>'
         + '</div>'
@@ -224,7 +231,7 @@
         // Details panel
         + '<div class="dv-panel dv-side">'
         +   '<div class="dv-side-head"><span class="dv-side-title">Document Details</span>'
-        +     '<button class="dv-collapse" title="Toggle details" onclick="toggleDetails()"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>'
+        +     '<button class="dv-collapse" title="Collapse details" onclick="toggleDetails()"><svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg></button>'
         +   '</div>'
         +   '<div class="dv-fields">'
         +     '<div class="dv-field"><div class="dv-flabel">Theme</div><div class="dv-fval">' + d.theme + '</div></div>'
