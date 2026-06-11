@@ -63,10 +63,10 @@
     .dv-page p { font-size: 15px; color: #444; line-height: 1.85; margin-bottom: 16px; }
 
     /* Details panel */
-    .dv-side { position: relative; }
-    .dv-side-head { display: flex; align-items: center; gap: 12px; padding: 22px 24px 6px; }
-    .dv-collapse { position: absolute; left: -14px; top: 22px; width: 28px; height: 28px; border-radius: 50%; border: 1px solid #e4e4e4; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
-    .dv-collapse svg { width: 14px; height: 14px; stroke: #555; fill: none; stroke-width: 2; transition: transform .2s; }
+    .dv-side-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 24px 6px; }
+    .dv-collapse { width: 32px; height: 32px; border-radius: 9px; border: 1px solid #e8e8e8; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: border-color .15s, background .15s; }
+    .dv-collapse:hover { border-color: #bbb; background: #fafafa; }
+    .dv-collapse svg { width: 16px; height: 16px; stroke: #555; fill: none; stroke-width: 2.2; transition: transform .2s; }
     .dv-side.collapsed .dv-collapse svg { transform: rotate(180deg); }
     .dv-side.collapsed .dv-fields { display: none; }
     .dv-side.collapsed .dv-side-head { padding-bottom: 22px; }
@@ -109,7 +109,6 @@
       .dv-crumb { display: none; }
       .dv-wrap { grid-template-columns: 1fr; gap: 18px; padding: 18px 20px 8px; }
       .dv-page { padding: 36px 26px 40px; } .dv-page-title { font-size: 28px; }
-      .dv-collapse { display: none; }
       .lp-cta { padding: 56px 24px; } .lp-cta h2 { font-size: 28px; }
       .lp-footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
     }
@@ -224,8 +223,9 @@
 
         // Details panel
         + '<div class="dv-panel dv-side">'
-        +   '<button class="dv-collapse" title="Collapse" onclick="toggleDetails()"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>'
-        +   '<div class="dv-side-head"><span class="dv-side-title">Document Details</span></div>'
+        +   '<div class="dv-side-head"><span class="dv-side-title">Document Details</span>'
+        +     '<button class="dv-collapse" title="Toggle details" onclick="toggleDetails()"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>'
+        +   '</div>'
         +   '<div class="dv-fields">'
         +     '<div class="dv-field"><div class="dv-flabel">Theme</div><div class="dv-fval">' + d.theme + '</div></div>'
         +     '<div class="dv-field"><div class="dv-flabel">File Type</div><span class="dv-pill">' + (FT_LABEL[d.type] || d.type) + '</span></div>'
