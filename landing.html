@@ -298,7 +298,9 @@
       display: flex; align-items: center; justify-content: space-between;
     }
     .lp-footer-left { font-size: 12px; color: #555; }
-    .lp-footer-right { font-size: 12px; color: #555; }
+    .lp-footer-right { display: flex; gap: 24px; }
+    .lp-footer-right a { font-size: 12px; color: #888; text-decoration: none; transition: color .15s; }
+    .lp-footer-right a:hover { color: #fff; }
 
     /* ── Responsive ── */
     @media (max-width: 900px) {
@@ -334,6 +336,7 @@
       <a class="lp-nav-link" href="about.html">About Us</a>
       <a class="lp-nav-link" href="dashboard.html">Dashboard</a>
       <a class="lp-nav-link" href="documents.html">Documents</a>
+      <a class="lp-nav-link" href="contact.html">Contact Us</a>
     </div>
     <div class="lp-nav-cta">
       <button class="lp-btn-ghost" onclick="goToApp()">Sign In</button>
@@ -548,7 +551,10 @@
   <!-- Footer -->
   <footer class="lp-footer">
     <div class="lp-footer-left">© 2026 Foundation for Ecological Security · FES DMS v1.0</div>
-    <div class="lp-footer-right">Wireframe Prototype</div>
+    <div class="lp-footer-right">
+      <a href="terms.html">Terms of Use</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
   </footer>
 
   <script>
