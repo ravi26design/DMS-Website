@@ -9,11 +9,7 @@
     body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #0a0a0a; background: #f7f7f7; -webkit-font-smoothing: antialiased; }
 
     /* ── Shared Nav ── */
-    .lp-nav {
-      position: sticky; top: 0; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
-      border-bottom: 1px solid #f0f0f0; padding: 0 max(24px, calc((100% - 1280px) / 2)); height: 64px;
-      display: flex; align-items: center; justify-content: space-between; z-index: 100;
-    }
+    .lp-nav { position: sticky; top: 0; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid #f0f0f0; padding: 0 max(24px, calc((100% - 1280px) / 2)); height: 64px; display: flex; align-items: center; justify-content: space-between; z-index: 100; }
     .lp-nav-brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
     .lp-nav-brand-icon { width: 34px; height: 34px; background: #0a0a0a; border-radius: 9px; display: flex; align-items: center; justify-content: center; }
     .lp-nav-brand-icon svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 1.8; }
@@ -29,49 +25,75 @@
     .lp-btn-solid { padding: 8px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; border: none; background: #0a0a0a; color: #fff; cursor: pointer; transition: background .15s, transform .1s; }
     .lp-btn-solid:hover { background: #222; transform: translateY(-1px); }
 
-    .app-wrap { max-width: none; margin: 0 auto; padding: 28px max(24px, calc((100% - 1280px) / 2)) 80px; }
-    .back { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: #666; text-decoration: none; margin-bottom: 22px; }
-    .back:hover { color: #0a0a0a; }
-    .back svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
+    /* ── Toolbar ── */
+    .dv-bar { padding: 24px max(24px, calc((100% - 1280px) / 2)) 0; display: flex; align-items: center; gap: 18px; }
+    .dv-back { display: inline-flex; align-items: center; gap: 9px; padding: 11px 18px; border: 1px solid #e4e4e4; border-radius: 12px; background: #fff; font-size: 12px; font-weight: 800; letter-spacing: .08em; color: #0a0a0a; cursor: pointer; text-decoration: none; transition: border-color .15s; }
+    .dv-back:hover { border-color: #999; }
+    .dv-back svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2.4; }
+    .dv-crumb { display: flex; align-items: center; gap: 11px; font-size: 15px; color: #999; min-width: 0; }
+    .dv-crumb .sep { color: #ccc; }
+    .dv-crumb .cur { color: #0a0a0a; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dv-actions { margin-left: auto; display: flex; gap: 10px; flex-shrink: 0; }
+    .dv-icon-btn { width: 44px; height: 44px; border: 1px solid #e4e4e4; border-radius: 12px; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: border-color .15s; }
+    .dv-icon-btn:hover { border-color: #999; }
+    .dv-icon-btn svg { width: 18px; height: 18px; stroke: #333; fill: none; stroke-width: 1.8; }
 
-    .detail { background: #fff; border: 1px solid #ececec; border-radius: 18px; overflow: hidden; }
-    .detail-head { display: flex; align-items: center; gap: 18px; padding: 28px 30px; border-bottom: 1px solid #f2f2f2; }
-    .d-icon { width: 56px; height: 56px; border-radius: 12px; background: #0a0a0a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .d-icon svg { width: 28px; height: 28px; stroke: #fff; fill: none; stroke-width: 1.8; }
-    .d-icon span { color: #fff; font-size: 14px; font-weight: 800; letter-spacing: .5px; }
-    .d-head-text h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.25; }
-    .d-sub { font-size: 13px; color: #888; margin-top: 4px; }
-    .d-actions { margin-left: auto; display: flex; gap: 10px; flex-shrink: 0; }
+    /* ── Main grid ── */
+    .dv-wrap { padding: 22px max(24px, calc((100% - 1280px) / 2)) 8px; display: grid; grid-template-columns: 1.75fr 1fr; gap: 22px; align-items: start; }
 
-    .detail-body { display: grid; grid-template-columns: 1.1fr 1fr; gap: 0; }
-    .meta-grid { padding: 28px 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px 24px; align-content: start; }
-    .meta-l { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #999; display: block; margin-bottom: 5px; }
-    .meta-v { font-size: 15px; font-weight: 600; color: #0a0a0a; }
-    .meta-uploader { display: flex; align-items: center; gap: 9px; }
-    .meta-ava { width: 28px; height: 28px; border-radius: 50%; background: #555; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .dv-panel { background: #fff; border: 1px solid #ececec; border-radius: 18px; overflow: hidden; }
+    .dv-panel-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 22px; border-bottom: 1px solid #f0f0f0; background: #fafafa; }
+    .dv-panel-title { font-size: 14px; font-weight: 700; }
+    .dv-expand { width: 32px; height: 32px; border: 1px solid #e4e4e4; border-radius: 9px; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .dv-expand:hover { border-color: #999; }
+    .dv-expand svg { width: 15px; height: 15px; stroke: #555; fill: none; stroke-width: 2; }
 
-    .preview-wrap { padding: 28px 30px; border-left: 1px solid #f2f2f2; }
-    .preview-box { background: #fafafa; border: 1px solid #eceef1; border-radius: 12px; height: 280px; overflow: hidden; }
-    .pv { width: 100%; height: 100%; }
-    .pv-pad { padding: 22px; }
-    .pv-line { height: 6px; border-radius: 3px; background: #e4e6ea; margin-bottom: 10px; }
-    .pv-line.t { height: 11px; width: 58%; background: #cdd1d8; margin-bottom: 18px; }
-    .pv-line.s { width: 72%; } .pv-line.xs { width: 45%; }
-    .pv-num { display: flex; gap: 9px; align-items: center; margin-bottom: 10px; }
-    .pv-num span { width: 7px; height: 7px; border-radius: 50%; background: #cdd1d8; flex-shrink: 0; }
-    .pv-num .pv-line { flex: 1; margin-bottom: 0; }
-    .pv-sheet { background: repeating-linear-gradient(#fff 0 22px, #e9eaec 22px 23px), repeating-linear-gradient(90deg, #fff 0 25%, #e9eaec 25% calc(25% + 1px)); }
-    .pv-sheet-head { height: 23px; background: #0a0a0a; }
-    .pv-table { border: 1px solid #e4e6ea; border-radius: 3px; margin-top: 14px; }
-    .pv-trow { height: 18px; border-bottom: 1px solid #eceef1; } .pv-trow:last-child { border-bottom: none; }
+    /* Document page preview */
+    .dv-doc-bar { height: 7px; background: #0a0a0a; }
+    .dv-doc-strip { height: 22px; background: #ededed; }
+    .dv-page { padding: 52px 64px 56px; }
+    .dv-page-brand { text-align: center; font-size: 12px; letter-spacing: .14em; color: #888; font-weight: 600; text-transform: uppercase; margin-bottom: 30px; }
+    .dv-page-title { text-align: center; font-size: 38px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 14px; }
+    .dv-page-sub { text-align: center; font-size: 17px; color: #555; margin-bottom: 28px; }
+    .dv-page-meta { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; font-size: 13px; color: #888; margin-bottom: 30px; }
+    .dv-page-meta b { color: #0a0a0a; font-weight: 700; }
+    .dv-page-rule { border: none; border-top: 2px solid #0a0a0a; margin-bottom: 30px; }
+    .dv-h { display: flex; align-items: center; gap: 13px; font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+    .dv-h::before { content: ''; width: 4px; height: 20px; background: #0a0a0a; border-radius: 2px; }
+    .dv-page p { font-size: 15px; color: #444; line-height: 1.85; margin-bottom: 16px; }
 
-    .notfound { background: #fff; border: 1px solid #ececec; border-radius: 18px; padding: 64px; text-align: center; color: #888; font-size: 15px; }
+    /* Details panel */
+    .dv-side { position: relative; }
+    .dv-side-head { display: flex; align-items: center; gap: 12px; padding: 22px 24px 6px; }
+    .dv-collapse { position: absolute; left: -14px; top: 22px; width: 28px; height: 28px; border-radius: 50%; border: 1px solid #e4e4e4; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
+    .dv-collapse svg { width: 14px; height: 14px; stroke: #555; fill: none; stroke-width: 2; }
+    .dv-side-title { font-size: 18px; font-weight: 800; letter-spacing: -0.01em; }
+    .dv-fields { padding: 14px 24px 28px; }
+    .dv-field { padding: 16px 0; border-bottom: 1px solid #f4f4f4; }
+    .dv-field:last-child { border-bottom: none; }
+    .dv-flabel { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #999; margin-bottom: 9px; }
+    .dv-fval { font-size: 16px; font-weight: 600; color: #0a0a0a; }
+    .dv-pill { display: inline-block; font-size: 13px; font-weight: 500; color: #333; padding: 7px 14px; border: 1px solid #e4e4e4; border-radius: 20px; background: #fafafa; }
+    .dv-code { display: inline-block; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; background: #f1f1f1; padding: 7px 12px; border-radius: 8px; color: #0a0a0a; }
+    .dv-uploader { display: flex; align-items: center; gap: 12px; }
+    .dv-uava { width: 40px; height: 40px; border-radius: 50%; background: #0a0a0a; color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .dv-uname { font-size: 15px; font-weight: 700; }
+    .dv-udate { font-size: 13px; color: #999; margin-top: 1px; }
+    .dv-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .dv-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #444; padding: 6px 12px; border: 1px solid #eee; border-radius: 8px; background: #fafafa; }
+    .dv-tag svg { width: 13px; height: 13px; stroke: #999; fill: none; stroke-width: 1.8; }
 
-    .lp-cta { padding: 80px max(24px, calc((100% - 1280px) / 2)); background: #0a0a0a; text-align: center; }
+    .notfound { margin: 40px max(24px, calc((100% - 1280px) / 2)); background: #fff; border: 1px solid #ececec; border-radius: 18px; padding: 64px; text-align: center; color: #888; font-size: 15px; }
+    .notfound a { color: #0a0a0a; font-weight: 600; }
+
+    /* ── CTA ── */
+    .lp-cta { padding: 80px max(24px, calc((100% - 1280px) / 2)); background: #0a0a0a; text-align: center; margin-top: 40px; }
     .lp-cta h2 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -0.03em; margin-bottom: 12px; }
     .lp-cta p { font-size: 15px; color: #888; margin-bottom: 36px; }
     .lp-cta-btn { padding: 14px 40px; border-radius: 10px; font-size: 15px; font-weight: 700; background: #fff; color: #0a0a0a; border: none; cursor: pointer; transition: background .15s, transform .1s; display: inline-flex; align-items: center; gap: 8px; }
     .lp-cta-btn:hover { background: #f0f0f0; transform: translateY(-2px); }
+
+    /* ── Footer ── */
     .lp-footer { padding: 24px max(24px, calc((100% - 1280px) / 2)); background: #0a0a0a; border-top: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: space-between; }
     .lp-footer-left { font-size: 12px; color: #555; }
     .lp-footer-right { display: flex; gap: 24px; }
@@ -80,10 +102,12 @@
 
     @media (max-width: 900px) {
       .lp-nav { padding: 0 24px; } .lp-nav-links { display: none; }
-      .app-wrap { padding: 24px 20px 60px; }
-      .detail-head { flex-wrap: wrap; } .d-actions { margin-left: 0; width: 100%; }
-      .detail-body { grid-template-columns: 1fr; }
-      .preview-wrap { border-left: none; border-top: 1px solid #f2f2f2; }
+      .dv-bar { padding: 20px 20px 0; flex-wrap: wrap; }
+      .dv-crumb { display: none; }
+      .dv-wrap { grid-template-columns: 1fr; gap: 18px; padding: 18px 20px 8px; }
+      .dv-page { padding: 36px 26px 40px; } .dv-page-title { font-size: 28px; }
+      .dv-collapse { display: none; }
+      .lp-cta { padding: 56px 24px; } .lp-cta h2 { font-size: 28px; }
       .lp-footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
     }
   </style>
@@ -93,13 +117,8 @@
   <!-- Shared Nav -->
   <nav class="lp-nav">
     <div class="lp-nav-brand" onclick="location.href='landing.html'">
-      <div class="lp-nav-brand-icon">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      </div>
-      <div>
-        <div class="lp-nav-brand-name">FES DMS</div>
-        <div class="lp-nav-brand-sub">Document Management</div>
-      </div>
+      <div class="lp-nav-brand-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div><div class="lp-nav-brand-name">FES DMS</div><div class="lp-nav-brand-sub">Document Management</div></div>
     </div>
     <div class="lp-nav-links">
       <a class="lp-nav-link" href="about.html">About</a>
@@ -113,10 +132,7 @@
     </div>
   </nav>
 
-  <div class="app-wrap">
-    <a class="back" href="documents.html"><svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back to Documents</a>
-    <div id="content"></div>
-  </div>
+  <div id="content"></div>
 
   <!-- CTA -->
   <section class="lp-cta">
@@ -148,20 +164,11 @@
       'rainfall-data-compilation':{ name:'Rainfall Data Compilation.xlsx',   type:'XLSX', theme:'Water & Watershed',     category:'Data',         uploader:'Anjali Kumar', date:'27 May 2026', visibility:'Public',  size:'1.6 MB', district:'Gajapati District' },
       'biodiversity-awareness-deck':{ name:'Biodiversity Awareness Deck.pptx',type:'PPTX',theme:'Forest & Biodiversity', category:'Presentation', uploader:'Priya Menon',  date:'26 May 2026', visibility:'Private', size:'5.9 MB', district:'Rayagada District' }
     };
-
-    function fileIconHTML(type){
-      if (type === 'PDF')  return '<span>PDF</span>';
-      if (type === 'XLSX') return '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="1"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="11" y1="4" x2="11" y2="20"/></svg>';
-      if (type === 'PPTX') return '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="4" y="5" width="16" height="12" rx="1"/><line x1="12" y1="17" x2="12" y2="21"/></svg>';
-      return '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg>';
-    }
-    function previewHTML(type){
-      if (type === 'XLSX') return '<div class="pv pv-sheet"><div class="pv-sheet-head"></div></div>';
-      if (type === 'PDF')  return '<div class="pv pv-pad"><div class="pv-line t" style="margin-left:auto;margin-right:auto;width:55%"></div><div class="pv-line s"></div><div class="pv-line"></div><div class="pv-line xs"></div><div class="pv-table"><div class="pv-trow"></div><div class="pv-trow"></div><div class="pv-trow"></div><div class="pv-trow"></div></div></div>';
-      if (type === 'PPTX') return '<div class="pv pv-pad"><div style="height:110px;background:#eef0f3;border-radius:4px;margin-bottom:14px"></div><div class="pv-line s"></div><div class="pv-line xs"></div></div>';
-      return '<div class="pv pv-pad"><div class="pv-line t"></div><div class="pv-line"></div><div class="pv-line s"></div><div class="pv-line"></div><div class="pv-num"><span></span><div class="pv-line"></div></div><div class="pv-num"><span></span><div class="pv-line"></div></div><div class="pv-num"><span></span><div class="pv-line"></div></div></div>';
-    }
+    var FT_LABEL = { PDF:'PDF Document', DOCX:'Word Document', XLSX:'Spreadsheet', PPTX:'Presentation' };
+    var MONTHS = { Jan:'01', Feb:'02', Mar:'03', Apr:'04', May:'05', Jun:'06', Jul:'07', Aug:'08', Sep:'09', Oct:'10', Nov:'11', Dec:'12' };
     function initials(name){ var p = name.split(' '); return (p[0].charAt(0) + (p.length>1 ? p[p.length-1].charAt(0) : '')).toUpperCase(); }
+    function isoDate(d){ var p = d.split(' '); return p[2] + '-' + (MONTHS[p[1]]||'01') + '-' + (p[0].length<2 ? '0'+p[0] : p[0]); }
+    function tagIcon(){ return '<svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>'; }
 
     (function(){
       var m = location.search.match(/[?&]id=([^&]+)/);
@@ -169,30 +176,68 @@
       var d = DOCS[id];
       var el = document.getElementById('content');
       if (!d) {
-        el.innerHTML = '<div class="notfound">Document not found. <a href="documents.html" style="color:#0a0a0a;font-weight:600">Return to Documents →</a></div>';
+        el.innerHTML = '<div class="notfound">Document not found. <a href="documents.html">Return to Documents →</a></div>';
         return;
       }
+      var title = d.name.replace(/\.[a-z0-9]+$/i, '');
+      var year = d.date.split(' ')[2];
+      var themeWord = d.theme.split(' ')[0].replace(/&/g, '');
+      var tags = [themeWord, d.category, d.visibility, d.type];
+
       el.innerHTML =
-        '<div class="detail">'
-        + '<div class="detail-head">'
-        +   '<div class="d-icon">' + fileIconHTML(d.type) + '</div>'
-        +   '<div class="d-head-text"><h1>' + d.name + '</h1><div class="d-sub">' + d.type + ' · ' + d.size + ' · ' + d.district + '</div></div>'
-        +   '<div class="d-actions"><button class="lp-btn-ghost">Share</button><button class="lp-btn-solid">Download</button></div>'
+        '<div class="dv-bar">'
+        + '<a class="dv-back" href="documents.html"><svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> DOCUMENTS</a>'
+        + '<div class="dv-crumb"><span>Documents</span><span class="sep">›</span><span class="cur">' + d.name + '</span></div>'
+        + '<div class="dv-actions">'
+        +   '<button class="dv-icon-btn" title="Share"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>'
+        +   '<button class="dv-icon-btn" title="Download"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>'
         + '</div>'
-        + '<div class="detail-body">'
-        +   '<div class="meta-grid">'
-        +     '<div><span class="meta-l">Theme</span><span class="meta-v">' + d.theme + '</span></div>'
-        +     '<div><span class="meta-l">Category</span><span class="meta-v">' + d.category + '</span></div>'
-        +     '<div><span class="meta-l">Uploaded By</span><span class="meta-v meta-uploader"><span class="meta-ava">' + initials(d.uploader) + '</span>' + d.uploader + '</span></div>'
-        +     '<div><span class="meta-l">Upload Date</span><span class="meta-v">' + d.date + '</span></div>'
-        +     '<div><span class="meta-l">Visibility</span><span class="meta-v">' + d.visibility + '</span></div>'
-        +     '<div><span class="meta-l">File Size</span><span class="meta-v">' + d.size + '</span></div>'
-        +     '<div><span class="meta-l">District</span><span class="meta-v">' + d.district + '</span></div>'
-        +     '<div><span class="meta-l">File Type</span><span class="meta-v">' + d.type + '</span></div>'
+        + '</div>'
+
+        + '<div class="dv-wrap">'
+
+        // Preview panel
+        + '<div class="dv-panel">'
+        +   '<div class="dv-panel-head"><span class="dv-panel-title">Document Preview</span>'
+        +     '<button class="dv-expand" title="Expand"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>'
         +   '</div>'
-        +   '<div class="preview-wrap"><div class="preview-box">' + previewHTML(d.type) + '</div></div>'
+        +   '<div class="dv-doc-bar"></div><div class="dv-doc-strip"></div>'
+        +   '<div class="dv-page">'
+        +     '<div class="dv-page-brand">Foundation for Ecological Security · DMS</div>'
+        +     '<div class="dv-page-title">' + title + '</div>'
+        +     '<div class="dv-page-sub">' + d.category + ' · ' + d.theme + ' · ' + year + '</div>'
+        +     '<div class="dv-page-meta">'
+        +       '<span>Prepared by <b>' + d.uploader + '</b></span>'
+        +       '<span>Version <b>v1.0</b></span>'
+        +       '<span>Date <b>' + d.date + '</b></span>'
+        +       '<span>Status <b>Active</b></span>'
+        +     '</div>'
+        +     '<hr class="dv-page-rule">'
+        +     '<div class="dv-h">1. Executive Summary</div>'
+        +     '<p>This document presents the key information, findings, and supporting detail for <strong>' + title + '</strong>. It has been prepared under the ' + d.theme + ' theme and is maintained within the FES Document Management System as a ' + d.category.toLowerCase() + '.</p>'
+        +     '<p>Uploaded by ' + d.uploader + ' on ' + d.date + ' from ' + d.district + ', the file is currently marked ' + d.visibility.toLowerCase() + ' and is available to authorised users across the organisation. It consolidates inputs from field teams and thematic leads to provide a unified reference for program delivery.</p>'
+        +     '<p>Refer to the Document Details panel for the complete metadata, version history, and tags associated with this record.</p>'
+        +   '</div>'
         + '</div>'
+
+        // Details panel
+        + '<div class="dv-panel dv-side">'
+        +   '<button class="dv-collapse" title="Collapse"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>'
+        +   '<div class="dv-side-head"><span class="dv-side-title">Document Details</span></div>'
+        +   '<div class="dv-fields">'
+        +     '<div class="dv-field"><div class="dv-flabel">Theme</div><div class="dv-fval">' + d.theme + '</div></div>'
+        +     '<div class="dv-field"><div class="dv-flabel">File Type</div><span class="dv-pill">' + (FT_LABEL[d.type] || d.type) + '</span></div>'
+        +     '<div class="dv-field"><div class="dv-flabel">Category</div><div class="dv-fval">' + d.category + '</div></div>'
+        +     '<div class="dv-field"><div class="dv-flabel">Visibility</div><div class="dv-fval">' + d.visibility + '</div></div>'
+        +     '<div class="dv-field"><div class="dv-flabel">File Size</div><div class="dv-fval">' + d.size + '</div></div>'
+        +     '<div class="dv-field"><div class="dv-flabel">Version</div><span class="dv-code">v1.0</span></div>'
+        +     '<div class="dv-field"><div class="dv-flabel">Uploaded By</div><div class="dv-uploader"><span class="dv-uava">' + initials(d.uploader) + '</span><div><div class="dv-uname">' + d.uploader + '</div><div class="dv-udate">' + isoDate(d.date) + '</div></div></div></div>'
+        +     '<div class="dv-field"><div class="dv-flabel">Tags</div><div class="dv-tags">' + tags.map(function(t){ return '<span class="dv-tag">' + tagIcon() + t + '</span>'; }).join('') + '</div></div>'
+        +   '</div>'
+        + '</div>'
+
         + '</div>';
+
       document.title = d.name + ' — FES DMS';
     })();
   </script>
