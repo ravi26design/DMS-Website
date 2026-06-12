@@ -123,7 +123,7 @@
       .lp-footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
     }
   </style>
-</head>
+  <link rel="stylesheet" href="modal.css" /></head>
 <body>
 
   <!-- Shared Nav -->
@@ -140,7 +140,7 @@
     </div>
     <div class="lp-nav-cta">
       <button class="lp-btn-ghost" onclick="location.href='dashboard.html'">Sign In</button>
-      <button class="lp-btn-solid" onclick="location.href='dashboard.html'">Get Started →</button>
+      <button class="lp-btn-solid" onclick="openGetStarted()">Get Started →</button>
     </div>
   </nav>
 
@@ -260,5 +260,5 @@
     })();
   </script>
 
-</body>
+  <script src="modal.js"></script></body>
 </html>

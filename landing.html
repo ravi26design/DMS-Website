@@ -318,7 +318,7 @@
       .lp-footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
     }
   </style>
-</head>
+  <link rel="stylesheet" href="modal.css" /></head>
 <body>
 
   <!-- Nav -->
@@ -340,7 +340,7 @@
     </div>
     <div class="lp-nav-cta">
       <button class="lp-btn-ghost" onclick="goToApp()">Sign In</button>
-      <button class="lp-btn-solid" onclick="goToApp()">Get Started →</button>
+      <button class="lp-btn-solid" onclick="openGetStarted()">Get Started →</button>
     </div>
   </nav>
 
@@ -349,7 +349,7 @@
     <h1>The smarter way to manage <em>ecological documents</em></h1>
     <p class="lp-hero-sub">A purpose-built Document Management System for field organisations — organise, approve, and share documents securely across teams and geographies.</p>
     <div class="lp-hero-actions">
-      <button class="lp-btn-solid lp-btn-lg" onclick="goToApp()">Get Started →</button>
+      <button class="lp-btn-solid lp-btn-lg" onclick="openGetStarted()">Get Started →</button>
     </div>
     <div class="lp-hero-stats">
       <div><div class="lp-stat-val">2,847+</div><div class="lp-stat-lbl">Documents Managed</div></div>
@@ -563,5 +563,5 @@
     }
   </script>
 
-</body>
+  <script src="modal.js"></script></body>
 </html>
